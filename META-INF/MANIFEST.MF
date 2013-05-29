@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SensorDrone Plugin
+Bundle-SymbolicName: org.ambientdynamix.contextplugins.sensordrone
+Bundle-Version: 1.0.0
+Bundle-ClassPath: .,lib/sdandroidlib.jar
+Export-Package: org.ambientdynamix.contextplugins.sensordrone
+Import-Package: org.ambientdynamix.api.application,
+ org.ambientdynamix.api.contextplugin,
+ org.ambientdynamix.api.contextplugin.security
+DynamicImport-Package: *
+
