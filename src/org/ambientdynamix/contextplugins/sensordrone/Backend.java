@@ -70,9 +70,15 @@ public class Backend
 					Log.i("Sensordrone", "toString="+device.toString());
 					if(device.getName().contains("Sensordrone"))
 					{
-						Log.i("Sensordrone", "try to connect");
-						drone.btConnect(device.getAddress());
-						myBlinker = new ConnectionBlinker(drone, 1000, 0, 0, 255);
+						Log.i("Sensordrone", "-------->try to connect");
+						if(!drone.btConnect(device.getAddress()))
+						{
+							Log.i("Sensordrone", "could not connect");
+						}
+						else
+						{
+							myBlinker = new ConnectionBlinker(drone, 1000, 0, 0, 255);
+						}
 						Log.i("Sensordrone", "is it connected"+drone.isConnected);
 						mBluetoothAdapter.startDiscovery();
 					}
