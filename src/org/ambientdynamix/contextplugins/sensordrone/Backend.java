@@ -32,6 +32,7 @@ public class Backend
 		scanToConnect();
 	}
 	
+	//This is addapted from the SDHelper Library 
 	public void scanToConnect()
 	{
 
