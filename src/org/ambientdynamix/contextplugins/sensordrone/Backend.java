@@ -77,9 +77,10 @@ public class Backend
 						}
 						else
 						{
-							myBlinker = new ConnectionBlinker(drone, 1000, 0, 0, 255);
+
 						}
-						Log.i("Sensordrone", "is it connected"+drone.isConnected);
+						myBlinker = new ConnectionBlinker(drone, 1000, 0, 255, 0);
+						Log.i("Sensordrone", "is it connected? "+drone.isConnected);
 						mBluetoothAdapter.startDiscovery();
 					}
 				}
