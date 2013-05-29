@@ -66,8 +66,11 @@ public class Backend
 					Log.i("Sensordrone", "Adress="+device.getAddress());
 					Log.i("Sensordrone", "HAShCode="+device.hashCode());
 					Log.i("Sensordrone", "toString="+device.toString());
-					
-				    //drone.btConnect("");
+					if(device.getName().contains("Sensordrone"))
+					{
+						drone.btConnect(device.getAddress());
+						mBluetoothAdapter.startDiscovery();
+					}
 				}
 			}
 	    	
