@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
+import com.sensorcon.sdhelper.ConnectionBlinker;
 import com.sensorcon.sensordrone.Drone;
 
 public class Backend 
@@ -17,6 +18,7 @@ public class Backend
 	private BroadcastReceiver mBluetoothReceiver;
 	private BluetoothAdapter mBluetoothAdapter;
 	private IntentFilter btFilter;
+	ConnectionBlinker myBlinker;
 	Context ctx;
 	
 	public Backend(Context context)
@@ -68,7 +70,10 @@ public class Backend
 					Log.i("Sensordrone", "toString="+device.toString());
 					if(device.getName().contains("Sensordrone"))
 					{
+						Log.i("Sensordrone", "try to connect");
 						drone.btConnect(device.getAddress());
+						myBlinker = new ConnectionBlinker(drone, 1000, 0, 0, 255);
+						Log.i("Sensordrone", "is it connected"+drone.isConnected);
 						mBluetoothAdapter.startDiscovery();
 					}
 				}
