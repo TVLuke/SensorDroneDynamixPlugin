@@ -7,18 +7,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-//import com.sensorcon.sensordrone.Drone;
+import com.sensorcon.sensordrone.Drone;
 
 public class Backend 
 {
-	//private static Drone drone; //the Sensordrone
+	private static Drone drone; //the Sensordrone
 	private BroadcastReceiver mBluetoothReceiver;
 	private BluetoothAdapter mBluetoothAdapter;
 	
 	public Backend()
 	{
 		Log.i("Sensordrone", "starting backend process");
-		//drone = new Drone(); //THIS IS A PROBLM BECAUSE WE GET A CLASSDEFNOTFOUNDERROR
+		drone = new Drone(); //THIS IS A PROBLM BECAUSE WE GET A CLASSDEFNOTFOUNDERROR
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();    
 	    if (!mBluetoothAdapter.isEnabled()) 
 	    {
