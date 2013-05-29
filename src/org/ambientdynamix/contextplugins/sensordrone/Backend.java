@@ -45,6 +45,7 @@ public class Backend
 	    if (!mBluetoothAdapter.isEnabled()) 
 	    {
 			// Don't proceed until the user turns Bluetooth on.
+	    	Log.i("Sensordrone", "wasn't on...");
 			return;
 		}
 	    
@@ -60,12 +61,18 @@ public class Backend
 				{
 					BluetoothDevice device = arg1.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 					Log.i("Sensordrone", "name="+device.getName());
+					Log.i("Sensordrone", "deviceClass="+device.getBluetoothClass());
+					Log.i("Sensordrone", "BondState="+device.getBondState());
+					Log.i("Sensordrone", "Adress="+device.getAddress());
+					Log.i("Sensordrone", "HAShCode="+device.hashCode());
+					Log.i("Sensordrone", "toString="+device.toString());
+					
 				    //drone.btConnect("");
 				}
 			}
 	    	
 	    };
-	    
+	    Log.i("Sensordrone", "ok");
 	    btFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
 	    ctx.registerReceiver(mBluetoothReceiver, btFilter);
 	    mBluetoothAdapter.startDiscovery();
