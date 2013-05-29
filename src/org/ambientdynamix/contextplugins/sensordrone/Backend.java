@@ -1,5 +1,11 @@
 package org.ambientdynamix.contextplugins.sensordrone;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -12,9 +18,9 @@ import android.util.Log;
 import com.sensorcon.sdhelper.ConnectionBlinker;
 import com.sensorcon.sensordrone.Drone;
 
-public class Backend 
+public class Backend
 {
-	private static Drone drone; //the Sensordrone
+	private static HashMap<String, Drone> drones; //the Sensordrone
 	private BroadcastReceiver mBluetoothReceiver;
 	private BluetoothAdapter mBluetoothAdapter;
 	private IntentFilter btFilter;
@@ -25,7 +31,7 @@ public class Backend
 	{
 		ctx = context;
 		Log.i("Sensordrone", "starting backend process");
-		drone = new Drone(); //THIS IS A PROBLM BECAUSE WE GET A CLASSDEFNOTFOUNDERROR
+		drones = new HashMap<String, Drone>(); 
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();    
 	    if (!mBluetoothAdapter.isEnabled()) 
 	    {
@@ -36,11 +42,11 @@ public class Backend
 	    { 
 	        //is enabled
 	    } 
-		scanToConnect(drone);
+		scanToConnect();
 	}
 	
 	//This is addapted from the SDHelper Library 
-	public void scanToConnect(final Drone drone)
+	public void scanToConnect()
 	{
 
 		// Is Bluetooth on?
@@ -70,20 +76,42 @@ public class Backend
 					Log.i("Sensordrone", "toString="+device.toString());
 					if(device.getName().contains("Sensordrone"))
 					{
-						mBluetoothAdapter.cancelDiscovery();
-						ctx.unregisterReceiver(mBluetoothReceiver);
-						Log.i("Sensordrone", "-------->try to connect");
-						if(!drone.btConnect(device.getAddress()))
+						Drone drone = new Drone();
+						if(drones.containsKey(device.getAddress()))
 						{
-							Log.i("Sensordrone", "could not connect");
+							//the device is already in the hashmap
 						}
 						else
 						{
-
+							drones.put(device.getAddress(), drone);
 						}
-						myBlinker = new ConnectionBlinker(drone, 1000, 0, 255, 0);
-						Log.i("Sensordrone", "is it connected? "+drone.isConnected);
 
+						mBluetoothAdapter.cancelDiscovery();
+						ctx.unregisterReceiver(mBluetoothReceiver);
+						Log.i("Sensordrone", "-------->try to connect");
+
+					}
+					
+					//TODO: Long term this has to be moved out of the receiver
+					Set<Entry<String, Drone>> droneset = drones.entrySet();
+					Iterator<Entry<String, Drone>> it = droneset.iterator();
+					while(it.hasNext())
+					{
+						Entry<String, Drone> dentry = it.next();
+						Drone d = dentry.getValue();
+						if(!d.isConnected)
+						{
+							if(!d.btConnect(device.getAddress()))
+							{
+								Log.i("Sensordrone", "could not connect");
+							}
+							else
+							{
+								//connected.
+							}
+						}
+						myBlinker = new ConnectionBlinker(d, 1000, 0, 0, 255);
+						Log.i("Sensordrone", "is it connected? "+d.isConnected);
 					}
 				}
 			}
@@ -96,5 +124,7 @@ public class Backend
 
 
 	}
+
+	
 
 }
