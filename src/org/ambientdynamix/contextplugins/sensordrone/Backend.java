@@ -2,9 +2,11 @@ package org.ambientdynamix.contextplugins.sensordrone;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.util.Log;
 
 import com.sensorcon.sensordrone.Drone;
@@ -14,9 +16,12 @@ public class Backend
 	private static Drone drone; //the Sensordrone
 	private BroadcastReceiver mBluetoothReceiver;
 	private BluetoothAdapter mBluetoothAdapter;
+	private IntentFilter btFilter;
+	Context ctx;
 	
-	public Backend()
+	public Backend(Context context)
 	{
+		ctx = context;
 		Log.i("Sensordrone", "starting backend process");
 		drone = new Drone(); //THIS IS A PROBLM BECAUSE WE GET A CLASSDEFNOTFOUNDERROR
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();    
@@ -29,11 +34,11 @@ public class Backend
 	    { 
 	        //is enabled
 	    } 
-		scanToConnect();
+		scanToConnect(drone);
 	}
 	
 	//This is addapted from the SDHelper Library 
-	public void scanToConnect()
+	public void scanToConnect(final Drone drone)
 	{
 
 		// Is Bluetooth on?
@@ -50,10 +55,21 @@ public class Backend
 			public void onReceive(Context arg0, Intent arg1) 
 			{
 				Log.i("Sensordrone", "found Bloutooth Device");
-				
+				String action = arg1.getAction();
+				if (BluetoothDevice.ACTION_FOUND.equals(action)) 
+				{
+					BluetoothDevice device = arg1.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+					Log.i("Sensordrone", "name="+device.getName());
+				    //drone.btConnect("");
+				}
 			}
 	    	
 	    };
+	    
+	    btFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+	    ctx.registerReceiver(mBluetoothReceiver, btFilter);
+	    mBluetoothAdapter.startDiscovery();
+
 
 	}
 

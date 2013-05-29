@@ -48,7 +48,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
             public void onClick(View v)
             {
             	Log.i("Sensordrone", "pressed the button 2");
-            	Backend backend = new Backend();
+            	Backend backend = new Backend(context);
             }
         });
         rootLayout.addView(b, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
