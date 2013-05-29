@@ -70,6 +70,8 @@ public class Backend
 					Log.i("Sensordrone", "toString="+device.toString());
 					if(device.getName().contains("Sensordrone"))
 					{
+						mBluetoothAdapter.cancelDiscovery();
+						ctx.unregisterReceiver(mBluetoothReceiver);
 						Log.i("Sensordrone", "-------->try to connect");
 						if(!drone.btConnect(device.getAddress()))
 						{
@@ -81,7 +83,7 @@ public class Backend
 						}
 						myBlinker = new ConnectionBlinker(drone, 1000, 0, 255, 0);
 						Log.i("Sensordrone", "is it connected? "+drone.isConnected);
-						mBluetoothAdapter.startDiscovery();
+
 					}
 				}
 			}
