@@ -323,6 +323,12 @@ public class Backend
 				drone.enableTemperature();
 				drone.quickEnable(drone.QS_TYPE_TEMPERATURE);
 				drone.measureTemperature();
+				
+				drone.enablePressure();
+				drone.quickEnable(drone.QS_TYPE_PRESSURE);
+				drone.measurePressure();
+				
+				
 				myBlinker.enable();
 				myBlinker.run();
 				
