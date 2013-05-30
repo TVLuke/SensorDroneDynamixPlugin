@@ -300,8 +300,8 @@ public class Backend
 			public void connectionLostEvent(EventObject arg0) 
 			{
 				Log.i(TAG, "sensordrone connection lost event");
-				ConnectionBlinker myBlinker = new ConnectionBlinker(drone, 1000, 0, 0, 255);
-				myBlinker.disable();
+				//nnectionBlinker myBlinker = new ConnectionBlinker(drone, 1000, 0, 0, 255);
+				//myBlinker.disable();
 				
 			}
 
