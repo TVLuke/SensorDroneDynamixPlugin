@@ -29,13 +29,14 @@ public class Backend
 	private static HashMap<String, Drone> drones; //the Sensordrone
 	private static HashMap<String, DroneStatusListener> statusListeners; 
 	private static HashMap<String, DroneEventListener> eventListeners;
+	private static HashMap<String, ArrayList<SDStreamer>> streamers;
 	private BroadcastReceiver mBluetoothReceiver;
 	private BluetoothAdapter mBluetoothAdapter;
 	BackendRunner backendrunnable;
 	private IntentFilter btFilter;
 	Context ctx;
 	private static boolean running=false;
-
+	int[] sensortypes;
 	
 	public Backend(Context context)
 	{
@@ -121,7 +122,22 @@ public class Backend
 		final Drone drone = new Drone();
 		drones.put(device.getAddress(), drone);
 		final ConnectionBlinker myBlinker = new ConnectionBlinker(drone, 1000, 0, 0, 255);
-		final SDStreamer sdstreamer2 = new SDStreamer(drone, drone.QS_TYPE_TEMPERATURE);
+		ArrayList<SDStreamer> streamerArray = new ArrayList<SDStreamer>();
+		sensortypes = new int[] { 
+				drone.QS_TYPE_TEMPERATURE,
+				drone.QS_TYPE_HUMIDITY,
+				drone.QS_TYPE_PRESSURE,
+				drone.QS_TYPE_IR_TEMPERATURE,
+				drone.QS_TYPE_RGBC,
+				drone.QS_TYPE_PRECISION_GAS,
+				drone.QS_TYPE_CAPACITANCE,
+				drone.QS_TYPE_ADC, 
+				drone.QS_TYPE_ALTITUDE };
+		for(int i=0; i<sensortypes.length; i++)
+		{
+			streamerArray.add(new SDStreamer(drone, sensortypes[i]));
+		}
+		streamers.put(device.getAddress(), streamerArray);
 		
 		DroneStatusListener dsListener = new DroneStatusListener() 
         {
@@ -245,7 +261,9 @@ public class Backend
 				}
 				if(drone.temperatureStatus)
 				{
-					sdstreamer2.run();
+					ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
+					SDStreamer s = sarray.get(0);
+					s.run();
 				}
 			}
 
@@ -291,9 +309,12 @@ public class Backend
 				drone.measureTemperature();
 				myBlinker.enable();
 				myBlinker.run();
-
-
-				sdstreamer2.enable();
+				
+				ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
+				for(int i=0; i<sensortypes.length; i++)
+				{
+					sarray.get(i).enable();
+				}
 				
 			}
 
@@ -301,6 +322,7 @@ public class Backend
 			public void connectionLostEvent(EventObject arg0) 
 			{
 				Log.i(TAG, "sensordrone connection lost event");
+				
 				//nnectionBlinker myBlinker = new ConnectionBlinker(drone, 1000, 0, 0, 255);
 				//myBlinker.disable();
 				
@@ -382,8 +404,9 @@ public class Backend
 			{
 				Log.i(TAG, "sensordrone temp measured");
 				Log.i(TAG, "sensordrone Temperature "+drone.lastMAC+" "+drone.temperature_Celcius);
-				sdstreamer2.streamHandler.postDelayed(sdstreamer2, 1000);
-				
+				ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
+				SDStreamer s = sarray.get(0);
+				s.streamHandler.postDelayed(s, 1000);				
 			}
 
 			@Override
