@@ -231,11 +231,14 @@ public class Backend
 			@Override
 			public void temperatureStatus(EventObject arg0) 
 			{
-				Log.i(TAG, "sensordrone temp status");
-				Log.i(TAG, "sensordrone Temperature "+drone.temperature_Celcius);
-				try {
+				Log.i(TAG, "sensordrone temp measured");
+				Log.i(TAG, "sensordrone Temperature "+drone.lastMAC+" "+drone.temperature_Celcius);
+				try 
+				{
 					Thread.sleep(1000);
-				} catch (InterruptedException e) {
+				} 
+				catch (InterruptedException e) 
+				{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
