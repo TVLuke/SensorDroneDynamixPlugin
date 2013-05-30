@@ -19,6 +19,7 @@ import android.util.Log;
 import com.sensorcon.sensordrone.Drone.DroneEventListener;
 import com.sensorcon.sensordrone.Drone.DroneStatusListener;
 import com.sensorcon.sdhelper.ConnectionBlinker;
+import com.sensorcon.sdhelper.SDStreamer;
 import com.sensorcon.sensordrone.Drone;
 
 public class Backend
@@ -119,6 +120,7 @@ public class Backend
 		final Drone drone = new Drone();
 		drones.put(device.getAddress(), drone);
 		final ConnectionBlinker myBlinker = new ConnectionBlinker(drone, 1000, 0, 0, 255);
+		final SDStreamer sdstreamer2 = new SDStreamer(drone, drone.QS_TYPE_TEMPERATURE);
 		
 		DroneStatusListener dsListener = new DroneStatusListener() 
         {
@@ -239,7 +241,7 @@ public class Backend
 				}
 				if(drone.temperatureStatus)
 				{
-					//sdstreamer2.run();
+					sdstreamer2.run();
 				}
 			}
 
@@ -287,7 +289,7 @@ public class Backend
 				myBlinker.run();
 
 
-				//sdstreamer2.enable();
+				sdstreamer2.enable();
 				
 			}
 
@@ -375,7 +377,7 @@ public class Backend
 			{
 				Log.i(TAG, "sensordrone temp measured");
 				Log.i(TAG, "sensordrone precisionGas ppm Carbon Monoxide "+drone.temperature_Celcius);
-				//sdstreamer2.streamHandler.postDelayed(sdstreamer2, 1000);
+				sdstreamer2.streamHandler.postDelayed(sdstreamer2, 1000);
 				
 			}
 
