@@ -32,7 +32,6 @@ public class Backend
 	private BluetoothAdapter mBluetoothAdapter;
 	BackendRunner backendrunnable;
 	private IntentFilter btFilter;
-	ConnectionBlinker myBlinker;
 	Context ctx;
 	private static boolean running=false;
 
@@ -42,7 +41,7 @@ public class Backend
 		ctx = context;
 		Log.i(TAG, "starting backend process");
 		drones = new HashMap<String, Drone>(); 
-		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();    
+		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 	    if (!mBluetoothAdapter.isEnabled()) 
 	    {
 	    	Log.i(TAG, "Bluetooth was off, will now be turned on");
@@ -119,6 +118,7 @@ public class Backend
 	{
 		final Drone drone = new Drone();
 		drones.put(device.getAddress(), drone);
+		final ConnectionBlinker myBlinker = new ConnectionBlinker(drone, 1000, 0, 0, 255);
 		
 		DroneStatusListener dsListener = new DroneStatusListener() 
         {
@@ -280,12 +280,11 @@ public class Backend
 			public void connectEvent(EventObject arg0) 
 			{
 				Log.i(TAG, "sensordrone connection event");
-				myBlinker.enable();
-				myBlinker.run();
 				drone.enableTemperature();
 				drone.quickEnable(drone.QS_TYPE_TEMPERATURE);
 				drone.measureTemperature();
-				ConnectionBlinker myBlinker = new ConnectionBlinker(drone, 1000, 0, 0, 255);
+				myBlinker.enable();
+				myBlinker.run();
 
 
 				//sdstreamer2.enable();
@@ -376,15 +375,6 @@ public class Backend
 			{
 				Log.i(TAG, "sensordrone temp measured");
 				Log.i(TAG, "sensordrone precisionGas ppm Carbon Monoxide "+drone.temperature_Celcius);
-				try 
-				{
-					Thread.sleep(1000);
-				} 
-				catch (InterruptedException e) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 				//sdstreamer2.streamHandler.postDelayed(sdstreamer2, 1000);
 				
 			}
@@ -460,6 +450,7 @@ public class Backend
 	
 	public static void disable()
 	{
+		Log.i(TAG, "Disable the runner");
 		running=false;
 	}
 	
