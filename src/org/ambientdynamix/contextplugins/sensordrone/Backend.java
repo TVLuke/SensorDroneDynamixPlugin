@@ -232,7 +232,7 @@ public class Backend
 			public void temperatureStatus(EventObject arg0) 
 			{
 				Log.i(TAG, "sensordrone temp status");
-				Log.i(TAG, "sensordrone precisionGas ppm Carbon Monoxide "+drone.temperature_Celcius);
+				Log.i(TAG, "sensordrone Temperature "+drone.temperature_Celcius);
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
@@ -377,7 +377,7 @@ public class Backend
 			public void temperatureMeasured(EventObject arg0) 
 			{
 				Log.i(TAG, "sensordrone temp measured");
-				Log.i(TAG, "sensordrone precisionGas ppm Carbon Monoxide "+drone.temperature_Celcius);
+				Log.i(TAG, "sensordrone Temperature "+drone.temperature_Celcius);
 				sdstreamer2.streamHandler.postDelayed(sdstreamer2, 1000);
 				
 			}
