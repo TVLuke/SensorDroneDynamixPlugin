@@ -97,7 +97,7 @@ public class Backend
 						}
 						else
 						{
-							//addDroneToTheRaster(device);
+							addDroneToTheRaster(device);
 							
 						}
 
