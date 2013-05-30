@@ -297,6 +297,7 @@ public class Backend
 			public void connectionLostEvent(EventObject arg0) 
 			{
 				Log.i(TAG, "sensordrone connection lost event");
+				ConnectionBlinker myBlinker = new ConnectionBlinker(drone, 1000, 0, 0, 255);
 				myBlinker.disable();
 				
 			}
@@ -453,6 +454,15 @@ public class Backend
 	public static void disable()
 	{
 		Log.i(TAG, "Disable the runner");
+		Set<Entry<String, Drone>> droneset = drones.entrySet();
+		Iterator<Entry<String, Drone>> it = droneset.iterator();
+		while(it.hasNext())
+		{
+			Entry<String, Drone> dentry = it.next();
+			Drone d = dentry.getValue();
+			d.disconnect();
+			Log.i(TAG, "is it connected? "+d.isConnected);
+		}
 		running=false;
 	}
 	
