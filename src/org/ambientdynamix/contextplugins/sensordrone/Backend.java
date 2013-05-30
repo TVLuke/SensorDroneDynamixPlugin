@@ -237,7 +237,13 @@ public class Backend
 			@Override
 			public void pressureStatus(EventObject arg0) 
 			{
-				// TODO Auto-generated method stub
+				Log.i(TAG, "sensordrone prssure status");
+				if(drone.temperatureStatus)
+				{
+					ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
+					SDStreamer s = sarray.get(2);
+					s.run();
+				}
 				
 			}
 
@@ -258,8 +264,8 @@ public class Backend
 			@Override
 			public void temperatureStatus(EventObject arg0) 
 			{
-				Log.i(TAG, "sensordrone temp measured");
-				Log.i(TAG, "sensordrone Temperature "+drone.lastMAC+" "+drone.temperature_Celcius);
+				Log.i(TAG, "sensordrone temp status");
+				//Log.i(TAG, "sensordrone Temperature "+drone.lastMAC+" "+drone.temperature_Celcius);
 				try 
 				{
 					Thread.sleep(1000);
@@ -391,7 +397,9 @@ public class Backend
 			@Override
 			public void pressureMeasured(EventObject arg0) 
 			{
-				// TODO Auto-generated method stub
+				ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
+				SDStreamer s = sarray.get(2);
+				s.streamHandler.postDelayed(s, 10000);	
 				
 			}
 
