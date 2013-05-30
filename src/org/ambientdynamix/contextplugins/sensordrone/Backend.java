@@ -23,13 +23,14 @@ import com.sensorcon.sensordrone.Drone;
 
 public class Backend
 {
-	private static final String TAG = "Sendordrone";
+	private static final String TAG = "Sensordrone";
 	
 	private static HashMap<String, Drone> drones; //the Sensordrone
 	private static HashMap<String, DroneStatusListener> statusListeners; 
 	private static HashMap<String, DroneEventListener> eventListeners;
 	private BroadcastReceiver mBluetoothReceiver;
 	private BluetoothAdapter mBluetoothAdapter;
+	BackendRunner backendrunnable;
 	private IntentFilter btFilter;
 	ConnectionBlinker myBlinker;
 	Context ctx;
@@ -51,6 +52,8 @@ public class Backend
 	        //is enabled
 	    } 
 		scanToConnect();
+		Thread t1 = new Thread( new BackendRunner() );
+		t1.start();
 	}
 	
 	//This is addapted from the SDHelper Library 
@@ -98,27 +101,6 @@ public class Backend
 						ctx.unregisterReceiver(mBluetoothReceiver);
 						Log.i(TAG, "-------->try to connect");
 
-					}
-					
-					//TODO: Long term this has to be moved out of the receiver
-					Set<Entry<String, Drone>> droneset = drones.entrySet();
-					Iterator<Entry<String, Drone>> it = droneset.iterator();
-					while(it.hasNext())
-					{
-						Entry<String, Drone> dentry = it.next();
-						Drone d = dentry.getValue();
-						if(!d.isConnected)
-						{
-							if(!d.btConnect(device.getAddress()))
-							{
-								Log.i(TAG, "could not connect");
-							}
-							else
-							{
-								//connected.
-							}
-						}
-						Log.i(TAG, "is it connected? "+d.isConnected);
 					}
 				}
 			}
@@ -302,6 +284,7 @@ public class Backend
 				drone.enableTemperature();
 				drone.quickEnable(drone.QS_TYPE_TEMPERATURE);
 				drone.measureTemperature();
+				ConnectionBlinker myBlinker = new ConnectionBlinker(drone, 1000, 0, 0, 255);
 
 
 				//sdstreamer2.enable();
@@ -430,6 +413,39 @@ public class Backend
         
         drone.registerDroneEventListener(deListener);
    		drone.registerDroneStatusListener(dsListener);
+	}
+
+	class BackendRunner implements Runnable
+	{
+		@Override
+		public void run() 
+		{
+			boolean running=true;
+			while(running)
+			{
+				Log.i(TAG, "drones+"+drones.size());	
+				//TODO: Try to connect
+				Set<Entry<String, Drone>> droneset = drones.entrySet();
+				Iterator<Entry<String, Drone>> it = droneset.iterator();
+				while(it.hasNext())
+				{
+					Entry<String, Drone> dentry = it.next();
+					Drone d = dentry.getValue();
+					if(!d.isConnected)
+					{
+						if(!d.btConnect(dentry.getKey()))
+						{
+							Log.i(TAG, "could not connect");
+						}
+						else
+						{
+							//connected.
+						}
+					}
+					Log.i(TAG, "is it connected? "+d.isConnected);
+				}
+			}
+		}
 	}
 	
 
