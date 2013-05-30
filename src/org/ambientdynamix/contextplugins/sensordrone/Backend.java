@@ -34,6 +34,7 @@ public class Backend
 	private IntentFilter btFilter;
 	ConnectionBlinker myBlinker;
 	Context ctx;
+	private static boolean running=false;
 
 	
 	public Backend(Context context)
@@ -420,7 +421,7 @@ public class Backend
 		@Override
 		public void run() 
 		{
-			boolean running=true;
+			running=true;
 			while(running)
 			{
 				Log.i(TAG, "drones+"+drones.size());	
@@ -443,9 +444,23 @@ public class Backend
 						}
 					}
 					Log.i(TAG, "is it connected? "+d.isConnected);
+					try 
+					{
+						Thread.sleep(1500);
+					} 
+					catch (InterruptedException e) 
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		}
+	}
+	
+	public static void disable()
+	{
+		running=false;
 	}
 	
 

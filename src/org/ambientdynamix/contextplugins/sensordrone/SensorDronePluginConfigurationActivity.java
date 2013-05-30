@@ -24,7 +24,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 	public void destroyView() throws Exception 
 	{
 		// TODO Auto-generated method stub
-		
+		Backend.disable();
 	}
 
 	@Override
