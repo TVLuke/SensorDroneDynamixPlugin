@@ -43,6 +43,7 @@ public class Backend
 		ctx = context;
 		Log.i(TAG, "starting backend process");
 		drones = new HashMap<String, Drone>(); 
+		streamers = new HashMap<String, ArrayList<SDStreamer>>();
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 	    if (!mBluetoothAdapter.isEnabled()) 
 	    {
@@ -453,7 +454,7 @@ public class Backend
 			running=true;
 			while(running)
 			{
-				Log.i(TAG, "drones+"+drones.size());	
+				Log.i(TAG, "drones size"+drones.size());	
 				//TODO: Try to connect
 				Set<Entry<String, Drone>> droneset = drones.entrySet();
 				Iterator<Entry<String, Drone>> it = droneset.iterator();
