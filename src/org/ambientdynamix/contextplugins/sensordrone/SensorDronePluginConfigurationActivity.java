@@ -40,7 +40,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 		
 		// Main layout. 
 		final LinearLayout rootLayout = new LinearLayout(context);
-		
+		rootLayout.setOrientation(LinearLayout.VERTICAL);
         Button b = new Button(context);
         b.setText("Search");
         b.setOnClickListener(new View.OnClickListener() 
@@ -61,9 +61,9 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
             	Backend.disable();
             }
         });
-        rootLayout.addView(b2, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+        rootLayout.addView(b2, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
         		FrameLayout.LayoutParams.WRAP_CONTENT));        
-        rootLayout.addView(b, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+        rootLayout.addView(b, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
         		FrameLayout.LayoutParams.WRAP_CONTENT));
 		return rootLayout;
 	}
