@@ -377,7 +377,7 @@ public class Backend
 			public void temperatureMeasured(EventObject arg0) 
 			{
 				Log.i(TAG, "sensordrone temp measured");
-				Log.i(TAG, "sensordrone Temperature "+drone.temperature_Celcius);
+				Log.i(TAG, "sensordrone Temperature "+drone.lastMAC+" "+drone.temperature_Celcius);
 				sdstreamer2.streamHandler.postDelayed(sdstreamer2, 1000);
 				
 			}
