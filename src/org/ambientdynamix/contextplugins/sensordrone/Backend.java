@@ -119,10 +119,15 @@ public class Backend
 
 	private void addDroneToTheRaster(BluetoothDevice device)
 	{
+		Log.i(TAG, "addtoRaster");
 		final Drone drone = new Drone();
+		Log.i(TAG, "create Drone object");
 		drones.put(device.getAddress(), drone);
+		Log.i(TAG, "connection Blinker");
 		final ConnectionBlinker myBlinker = new ConnectionBlinker(drone, 1000, 0, 0, 255);
+		Log.i(TAG, "streamer array erzeugen");
 		ArrayList<SDStreamer> streamerArray = new ArrayList<SDStreamer>();
+		Log.i(TAG, "das array fuellen");
 		sensortypes = new int[] { 
 				drone.QS_TYPE_TEMPERATURE,
 				drone.QS_TYPE_HUMIDITY,
@@ -133,11 +138,15 @@ public class Backend
 				drone.QS_TYPE_CAPACITANCE,
 				drone.QS_TYPE_ADC, 
 				drone.QS_TYPE_ALTITUDE };
+		Log.i(TAG, "und nu for-schleife");
 		for(int i=0; i<sensortypes.length; i++)
 		{
+			Log.i(TAG, "->");
 			streamerArray.add(new SDStreamer(drone, sensortypes[i]));
 		}
+		Log.i(TAG, "and into the streamers hashmap");
 		streamers.put(device.getAddress(), streamerArray);
+		Log.i(TAG, "so far so good");
 		
 		DroneStatusListener dsListener = new DroneStatusListener() 
         {
