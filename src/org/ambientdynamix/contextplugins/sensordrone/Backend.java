@@ -52,9 +52,12 @@ public class Backend
 	    { 
 	        //is enabled
 	    } 
-		scanToConnect();
-		Thread t1 = new Thread( new BackendRunner() );
-		t1.start();
+	    if(!running)
+	    {
+			scanToConnect();
+			Thread t1 = new Thread( new BackendRunner() );
+			t1.start();
+	    }
 	}
 	
 	//This is addapted from the SDHelper Library 
@@ -94,14 +97,12 @@ public class Backend
 						}
 						else
 						{
-							addDroneToTheRaster(device);
+							//addDroneToTheRaster(device);
 							
 						}
 
-						mBluetoothAdapter.cancelDiscovery();
-						ctx.unregisterReceiver(mBluetoothReceiver);
-						Log.i(TAG, "-------->try to connect");
-
+						//mBluetoothAdapter.cancelDiscovery();
+						//ctx.unregisterReceiver(mBluetoothReceiver);
 					}
 				}
 			}
