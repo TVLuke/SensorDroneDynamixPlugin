@@ -61,7 +61,10 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
             	Backend.disable();
             }
         });
+        
         rootLayout.addView(b, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+        		FrameLayout.LayoutParams.WRAP_CONTENT));
+        rootLayout.addView(b2, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
         		FrameLayout.LayoutParams.WRAP_CONTENT));
 		return rootLayout;
 	}
