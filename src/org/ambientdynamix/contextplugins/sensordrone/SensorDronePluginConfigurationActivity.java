@@ -31,7 +31,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 	public View initializeView(final Context context, ContextPluginRuntime arg1, int arg2)
 			throws Exception 
 	{
-		Log.i("Sensordrone", "initialize Views 4");
+		Log.i("Sensordrone", "initialize Views 5");
 		// Discover our screen size for proper formatting 
 		DisplayMetrics met = context.getResources().getDisplayMetrics();
 
@@ -47,7 +47,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
         {
             public void onClick(View v)
             {
-            	Log.i("Sensordrone", "pressed the button 4");
+            	Log.i("Sensordrone", "pressed the button 5");
             	Backend backend = new Backend(context);
             }
         });
@@ -57,7 +57,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
         {
             public void onClick(View v)
             {
-            	Log.i("Sensordrone", "pressed the button 4b");
+            	Log.i("Sensordrone", "pressed the button 5b");
             	Backend.disable();
             }
         });
