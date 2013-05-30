@@ -406,6 +406,7 @@ public class Backend
 				ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
 				SDStreamer s = sarray.get(2);
 				s.streamHandler.postDelayed(s, 10000);	
+				Log.i(TAG, "sensordrone pressure level in Pa "+drone.pressure_Pascals);//TODO
 				
 			}
 
