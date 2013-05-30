@@ -444,15 +444,15 @@ public class Backend
 						}
 					}
 					Log.i(TAG, "is it connected? "+d.isConnected);
-					try 
-					{
-						Thread.sleep(1500);
-					} 
-					catch (InterruptedException e) 
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				}
+				try 
+				{
+					Thread.sleep(2000);
+				} 
+				catch (InterruptedException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
