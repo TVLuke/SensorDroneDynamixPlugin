@@ -14,6 +14,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
 import android.util.Log;
 
 import com.sensorcon.sensordrone.Drone.DroneEventListener;
@@ -27,8 +28,7 @@ public class Backend
 	private static final String TAG = "Sensordrone";
 	
 	private static HashMap<String, Drone> drones; //the Sensordrone
-	private static HashMap<String, DroneStatusListener> statusListeners; 
-	private static HashMap<String, DroneEventListener> eventListeners;
+	private static HashMap<String, ConnectionBlinker> blinkerarray; 
 	private static HashMap<String, ArrayList<SDStreamer>> streamers;
 	private BroadcastReceiver mBluetoothReceiver;
 	private BluetoothAdapter mBluetoothAdapter;
@@ -49,6 +49,15 @@ public class Backend
 	    {
 	    	Log.i(TAG, "Bluetooth was off, will now be turned on");
 	    	mBluetoothAdapter.enable();
+	    	try 
+	    	{
+				Thread.sleep(2000);//so that its on by the time we go to scanning... there might be other, better ways of doing this. probably.
+			} 
+	    	catch (InterruptedException e) 
+	    	{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    }
 	    else
 	    { 
@@ -57,7 +66,7 @@ public class Backend
 	    if(!running)
 	    {
 			scanToConnect();
-			Thread t1 = new Thread( new BackendRunner() );
+			Thread t1 = new Thread( new BackendRunner());
 			t1.start();
 	    }
 	}
@@ -125,7 +134,7 @@ public class Backend
 		Log.i(TAG, "create Drone object");
 		drones.put(device.getAddress(), drone);
 		Log.i(TAG, "connection Blinker");
-		final ConnectionBlinker myBlinker = new ConnectionBlinker(drone, 1000, 0, 0, 255);
+		blinkerarray.put(device.getAddress(), new ConnectionBlinker(drone, 1000, 0, 0, 255));
 		Log.i(TAG, "streamer array erzeugen");
 		ArrayList<SDStreamer> streamerArray = new ArrayList<SDStreamer>();
 		Log.i(TAG, "das array fuellen");
@@ -198,7 +207,13 @@ public class Backend
 			public void humidityStatus(EventObject arg0) 
 			{
 				Log.i(TAG, "sensordrone humidity status");
-				// TODO Auto-generated method stub
+				//Log.i(TAG, "sensordrone Temperature "+drone.lastMAC+" "+drone.temperature_Celcius);
+				if(drone.humidityStatus)
+				{
+					ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
+					SDStreamer s = sarray.get(1);
+					s.run();
+				}
 				
 			}
 
@@ -238,7 +253,7 @@ public class Backend
 			public void pressureStatus(EventObject arg0) 
 			{
 				Log.i(TAG, "sensordrone prssure status");
-				if(drone.temperatureStatus)
+				if(drone.pressureStatus)
 				{
 					ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
 					SDStreamer s = sarray.get(2);
@@ -257,8 +272,14 @@ public class Backend
 			@Override
 			public void rgbcStatus(EventObject arg0) 
 			{
+				Log.i(TAG, "sensordrone rgbc status");
 				// TODO Auto-generated method stub
-				
+				if(drone.rgbcStatus)
+				{
+					ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
+					SDStreamer s = sarray.get(4);
+					s.run();
+				}
 			}
 
 			@Override
@@ -266,15 +287,6 @@ public class Backend
 			{
 				Log.i(TAG, "sensordrone temp status");
 				//Log.i(TAG, "sensordrone Temperature "+drone.lastMAC+" "+drone.temperature_Celcius);
-				try 
-				{
-					Thread.sleep(1000);
-				} 
-				catch (InterruptedException e) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 				if(drone.temperatureStatus)
 				{
 					ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
@@ -328,9 +340,16 @@ public class Backend
 				drone.quickEnable(drone.QS_TYPE_PRESSURE);
 				drone.measurePressure();
 				
+				drone.enableRGBC();
+				drone.quickEnable(drone.QS_TYPE_RGBC);
+				drone.measureRGBC();
 				
-				myBlinker.enable();
-				myBlinker.run();
+				drone.enableHumidity();
+				drone.quickEnable(drone.QS_TYPE_HUMIDITY);
+				drone.measureHumidity();
+				
+				blinkerarray.get(drone.lastMAC).enable();
+				blinkerarray.get(drone.lastMAC).run();
 				
 				ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
 				for(int i=0; i<sensortypes.length; i++)
@@ -344,10 +363,20 @@ public class Backend
 			public void connectionLostEvent(EventObject arg0) 
 			{
 				Log.i(TAG, "sensordrone connection lost event");
+				//disable temperature
+				drone.disableTemperature();
+				drone.quickDisable(drone.QS_TYPE_TEMPERATURE);
 				
-				//nnectionBlinker myBlinker = new ConnectionBlinker(drone, 1000, 0, 0, 255);
-				//myBlinker.disable();
+				drone.disablePressure();
+				drone.quickDisable(drone.QS_TYPE_PRESSURE);
 				
+				drone.disableRGBC();
+				drone.quickDisable(drone.QS_TYPE_RGBC);
+				
+				drone.disableHumidity();
+				drone.quickDisable(drone.QS_TYPE_HUMIDITY);	
+
+				blinkerarray.get(drone.lastMAC).disable();
 			}
 
 			@Override
@@ -362,12 +391,28 @@ public class Backend
 			{
 				Log.i(TAG, "sensordrone disconnect lost event");
 				
+				drone.disableTemperature();
+				drone.quickDisable(drone.QS_TYPE_TEMPERATURE);
+				
+				drone.disablePressure();
+				drone.quickDisable(drone.QS_TYPE_PRESSURE);
+				
+				drone.disableRGBC();
+				drone.quickDisable(drone.QS_TYPE_RGBC);
+				
+				drone.disableHumidity();
+				drone.quickDisable(drone.QS_TYPE_HUMIDITY);	
+				
+				blinkerarray.get(drone.lastMAC).disable();	
 			}
 
 			@Override
 			public void humidityMeasured(EventObject arg0) 
 			{
-				// TODO Auto-generated method stub
+				ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
+				SDStreamer s = sarray.get(1);
+				s.streamHandler.postDelayed(s, 10000);	
+				Log.i(TAG, "sensordrone Humidity % "+drone.humidity_Percent);
 				
 			}
 
@@ -406,7 +451,7 @@ public class Backend
 				ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
 				SDStreamer s = sarray.get(2);
 				s.streamHandler.postDelayed(s, 10000);	
-				Log.i(TAG, "sensordrone pressure level in Pa "+drone.pressure_Pascals);//TODO
+				Log.i(TAG, "sensordrone pressure level in Pa "+drone.pressure_Pascals);
 				
 			}
 
@@ -421,7 +466,10 @@ public class Backend
 			public void rgbcMeasured(EventObject arg0) 
 			{
 				// TODO Auto-generated method stub
-				
+				ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
+				SDStreamer s = sarray.get(4);
+				s.streamHandler.postDelayed(s, 10000);
+				Log.i(TAG, "sensordrone pressure level in Pa "+drone.rgbcLux);//TODO
 			}
 
 			@Override
@@ -463,43 +511,74 @@ public class Backend
 
 	class BackendRunner implements Runnable
 	{
+		private Handler handler = new Handler();
+		private int delay=1000;
+		
 		@Override
 		public void run() 
 		{
-			running=true;
-			while(running)
+			Log.i(TAG, "drones size"+drones.size());	
+			//TODO: Try to connect
+			Set<Entry<String, Drone>> droneset = drones.entrySet();
+			Iterator<Entry<String, Drone>> it = droneset.iterator();
+	    	Set<BluetoothDevice> bondeddevices = mBluetoothAdapter.getBondedDevices();
+			while(it.hasNext())
 			{
-				Log.i(TAG, "drones size"+drones.size());	
-				//TODO: Try to connect
-				Set<Entry<String, Drone>> droneset = drones.entrySet();
-				Iterator<Entry<String, Drone>> it = droneset.iterator();
-				while(it.hasNext())
+				Entry<String, Drone> dentry = it.next();
+				Drone d = dentry.getValue();
+				if(!d.isConnected)
 				{
-					Entry<String, Drone> dentry = it.next();
-					Drone d = dentry.getValue();
-					if(!d.isConnected)
+					if(!d.btConnect(dentry.getKey()))
 					{
-						if(!d.btConnect(dentry.getKey()))
+						Log.i(TAG, "could not connect");
+					}
+					else
+					{
+
+					}
+				}
+				else
+				{
+					//TODO: the device-representation is connected, however, it may have gotten out of range and that may not be known or something, so we better check in the list of bonded devices
+					Iterator<BluetoothDevice> bit = bondeddevices.iterator();
+					boolean actuallyconnected=false;
+					while(bit.hasNext())
+					{
+						BluetoothDevice div = bit.next();
+						if(div.getAddress().equals(dentry.getKey()))
 						{
-							Log.i(TAG, "could not connect");
-						}
-						else
-						{
-							//connected.
+							//the adress of this device was actually in the list
+							actuallyconnected=true;
 						}
 					}
-					Log.i(TAG, "is it connected? "+d.isConnected);
+					if(!actuallyconnected)//it wasn't found under the bonded divices.
+					{
+						d.disconnect();
+					}
 				}
-				try 
-				{
-					Thread.sleep(2000);
-				} 
-				catch (InterruptedException e) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				Log.i(TAG, "is it connected? "+d.isConnected);
 			}
+			try 
+			{
+				Thread.sleep(2000);
+			} 
+			catch (InterruptedException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			handler.removeCallbacks(this); // remove the old callback
+			handler.postDelayed(this, delay); // register a new one
+		}
+		
+		public void onResume() 
+		{
+			handler.postDelayed(this, delay);
+		}
+
+		public void onPause() 
+		{
+			handler.removeCallbacks(this); // stop the map from updating
 		}
 	}
 	
@@ -516,6 +595,12 @@ public class Backend
 			Log.i(TAG, "is it connected? "+d.isConnected);
 		}
 		running=false;
+	}
+
+	public static HashMap<String, Drone> getDroneList() 
+	{
+		return drones;
+		
 	}
 	
 
