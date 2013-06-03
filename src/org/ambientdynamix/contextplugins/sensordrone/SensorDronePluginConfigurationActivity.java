@@ -71,6 +71,9 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 		listLayout = new LinearLayout(context);
 		listLayout.setOrientation(LinearLayout.VERTICAL);
 		
+        final TextView searching = new TextView(ctx);
+        searching.setText("");
+        
         Button b = new Button(context);
         b.setText("Search");
         b.setOnClickListener(new View.OnClickListener() 
@@ -79,8 +82,10 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
             {
             	Log.i("Sensordrone", "pressed the button 6");
             	Backend backend = new Backend(context);
+                searching.setText("searching...");
             }
         });
+
         Button b2 = new Button(context);
         b2.setText("StopAll");
         b2.setOnClickListener(new View.OnClickListener() 
@@ -88,6 +93,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
             public void onClick(View v)
             {
             	Log.i("Sensordrone", "pressed the button 5b");
+            	searching.setText("");
             	Backend.disable();
             }
         });
@@ -111,6 +117,10 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
         //buttons
         rootLayout.addView(b, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
         		FrameLayout.LayoutParams.WRAP_CONTENT));
+        
+        rootLayout.addView(searching,  new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+        		FrameLayout.LayoutParams.WRAP_CONTENT));
+        
         rootLayout.addView(b2, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
         		FrameLayout.LayoutParams.WRAP_CONTENT));        
 		return rootLayout;

@@ -40,6 +40,7 @@ public class Backend
 	public Backend(Context context)
 	{
 		ctx = context;
+		running=true;
 		Log.i(TAG, "starting backend process");
 		drones = new HashMap<String, Drone>(); 
 		streamers = new HashMap<String, ArrayList<SDStreamer>>();
