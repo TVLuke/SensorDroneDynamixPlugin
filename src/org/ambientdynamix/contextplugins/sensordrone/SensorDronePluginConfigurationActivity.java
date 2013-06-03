@@ -117,6 +117,12 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 			handler.removeCallbacks(this); // remove the old callback
 			handler.postDelayed(this, delay); // register a new one
 			Log.i(TAG, "child count"+rootLayout.getChildCount());
+			for(int i=0; i<rootLayout.getChildCount(); i++)
+			{
+				View v = rootLayout.getChildAt(i);	
+				Log.i(TAG, "View nr "+i);
+				v.getClass();
+			}
 			HashMap<String, Drone> drones = Backend.getDroneList();
 			Set<Entry<String, Drone>> droneset = drones.entrySet();
 			Iterator<Entry<String, Drone>> it = droneset.iterator();
@@ -124,6 +130,8 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 			{
 				Entry<String, Drone> dentry = it.next();
 				Drone d = dentry.getValue();
+				//put the drones into the text...
+				Log.i(TAG, "PAscal Pressure via. UI Thread: "+d.pressure_Pascals);
 				
 			}
 		}
