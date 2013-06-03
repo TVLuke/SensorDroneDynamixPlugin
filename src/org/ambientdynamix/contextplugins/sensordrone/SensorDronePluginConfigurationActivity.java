@@ -132,10 +132,20 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 			tv.setBackgroundColor(0x00ff0000);
 			tv.setTextSize(20);
 			TextView v1 = new TextView(ctx);
-			v1.setText(""+d.temperature_Celcius+" C");
+			v1.setText("   "+d.temperature_Celcius+" °C");
+			TextView v2 = new TextView(ctx);
+			v1.setText("   "+d.pressure_Pascals+" Pa");
+			TextView v3 = new TextView(ctx);
+			v3.setText("   "+d.rgbcLux+" lux");
+			TextView v4 = new TextView(ctx);
+			v4.setText("   "+d.humidity_Percent+" %");
 	        listLayout.addView(tv, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
 	        		FrameLayout.LayoutParams.WRAP_CONTENT));       
 	        listLayout.addView(v1, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+	        		FrameLayout.LayoutParams.WRAP_CONTENT));   
+	        listLayout.addView(v3, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+	        		FrameLayout.LayoutParams.WRAP_CONTENT));   
+	        listLayout.addView(v4, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
 	        		FrameLayout.LayoutParams.WRAP_CONTENT));   
 		}
 
