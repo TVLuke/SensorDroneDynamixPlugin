@@ -619,13 +619,20 @@ public class Backend
 	{
 		Log.i(TAG, "Disable the runner");
 		Set<Entry<String, Drone>> droneset = drones.entrySet();
+		Log.i(TAG, "a");
 		Iterator<Entry<String, Drone>> it = droneset.iterator();
+		Log.i(TAG, "b");
 		while(it.hasNext())
 		{
+			Log.i(TAG, "c");
 			Entry<String, Drone> dentry = it.next();
+			Log.i(TAG, "d");
 			Drone d = dentry.getValue();
+			Log.i(TAG, "e");
 			d.disconnect();
+			Log.i(TAG, "f");
 			Log.i(TAG, "is it connected? "+d.isConnected);
+			Log.i(TAG, "g");
 		}
 		running=false;
 	}
