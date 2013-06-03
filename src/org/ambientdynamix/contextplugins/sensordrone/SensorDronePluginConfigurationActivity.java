@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -29,7 +30,9 @@ import android.widget.TextView;
 public class SensorDronePluginConfigurationActivity extends Activity implements IContextPluginConfigurationViewFactory
 {
 
-	UIUpdater uiupdater;
+	String[] dronesArray = {""};
+	ListView dronelist;
+	ArrayAdapter<String> droneAdapter;
 	LinearLayout rootLayout;
 	private static final String TAG = "Sensordrone";
 	
@@ -54,6 +57,22 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 		// Main layout. 
 		rootLayout = new LinearLayout(context);
 		rootLayout.setOrientation(LinearLayout.VERTICAL);
+		Button updatebutton = new Button(context);
+		updatebutton.setText("Update List");
+		updatebutton.setOnClickListener(new View.OnClickListener() 
+        {
+            public void onClick(View v)
+            {
+            	Log.i("Sensordrone", "pressed the button 6c");
+            	updateListView();
+            }
+        });
+		
+		
+		dronelist = new ListView(context);
+		droneAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, dronesArray);
+		dronelist.setAdapter(droneAdapter);
+		
         Button b = new Button(context);
         b.setText("Search");
         b.setOnClickListener(new View.OnClickListener() 
@@ -77,23 +96,20 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
         //Header
         TextView header = new TextView(context);
         header.setText("Sensordrone Plugin Configuration");
-        //Drones
-        TextView drone1 = new TextView(context);
-        drone1.setBackgroundColor(0xfff00000);
-        
-        TextView drone2 = new TextView(context);
-        drone2.setBackgroundColor(0x000fff00);
+
         
         
         //Add Header
         rootLayout.addView(header,  new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
         		FrameLayout.LayoutParams.WRAP_CONTENT));
+        //updateButton
+        rootLayout.addView(updatebutton, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+        		FrameLayout.LayoutParams.WRAP_CONTENT));
+        
         //add drone 1 textview
-        rootLayout.addView(drone1, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+        rootLayout.addView(dronelist, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
         		FrameLayout.LayoutParams.WRAP_CONTENT));
-        //add drone 2 textview
-        rootLayout.addView(drone2, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-        		FrameLayout.LayoutParams.WRAP_CONTENT));
+
         //buttons
         rootLayout.addView(b, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
         		FrameLayout.LayoutParams.WRAP_CONTENT));
@@ -102,47 +118,20 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 		return rootLayout;
 	}
 	
-	private class UIUpdater implements Runnable
+	private void updateListView()
 	{
-
-		private Handler handler = new Handler();
-		private int delay=3000;
-		
-		@Override
-		public void run() 
+		HashMap<String, Drone> drones = Backend.getDroneList();
+		Set<Entry<String, Drone>> droneset = drones.entrySet();
+		Iterator<Entry<String, Drone>> it = droneset.iterator();
+		int counter = 0;
+		while(it.hasNext())
 		{
-			// TODO Auto-generated method stub
-			Log.i(TAG, "child count"+rootLayout.getChildCount());
-			for(int i=0; i<rootLayout.getChildCount(); i++)
-			{
-				View v = rootLayout.getChildAt(i);	
-				Log.i(TAG, "View nr "+i);
-				v.getClass();
-			}
-			HashMap<String, Drone> drones = Backend.getDroneList();
-			Set<Entry<String, Drone>> droneset = drones.entrySet();
-			Iterator<Entry<String, Drone>> it = droneset.iterator();
-			while(it.hasNext())
-			{
-				Entry<String, Drone> dentry = it.next();
-				Drone d = dentry.getValue();
-				//put the drones into the text...
-				Log.i(TAG, "Pascal Pressure via. UI Thread: "+d.pressure_Pascals);
-				
-			}
-			handler.removeCallbacks(this); // remove the old callback
-			handler.postDelayed(this, delay); // register a new one
+			Entry<String, Drone> dentry = it.next();
+			Drone d = dentry.getValue();
+			dronesArray[counter]=""+d.lastMAC;
 		}
-		
-		public void onResume() 
-		{
-			handler.postDelayed(this, delay);
-		}
-
-		public void onPause() 
-		{
-			handler.removeCallbacks(this); // stop the map from updating
-		}
-		
+		droneAdapter.notifyDataSetChanged();
 	}
+	
+	
 }

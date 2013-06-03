@@ -32,7 +32,6 @@ public class Backend
 	private static HashMap<String, ArrayList<SDStreamer>> streamers;
 	private BroadcastReceiver mBluetoothReceiver;
 	private BluetoothAdapter mBluetoothAdapter;
-	static BackendRunner backendrunnable;
 	private IntentFilter btFilter;
 	Context ctx;
 	private static boolean running=false;
@@ -512,7 +511,7 @@ public class Backend
 				Log.i(TAG, "sensordrone Temperature "+drone.lastMAC+" "+drone.temperature_Celcius);
 				ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
 				SDStreamer s = sarray.get(0);
-				s.streamHandler.postDelayed(s, 1000);				
+				s.streamHandler.postDelayed(s, 10000);				
 			}
 
 			@Override
@@ -552,6 +551,11 @@ public class Backend
 		{
 				Log.i(TAG, "drones size"+drones.size());	
 				//TODO: Try to connect
+				if(!running)
+				{
+					handler.removeCallbacks(this);
+					return;
+				}
 				Set<Entry<String, Drone>> droneset = drones.entrySet();
 				Iterator<Entry<String, Drone>> it = droneset.iterator();
 		    	Set<BluetoothDevice> bondeddevices = mBluetoothAdapter.getBondedDevices();
@@ -601,7 +605,10 @@ public class Backend
 					e.printStackTrace();
 				}
 			handler.removeCallbacks(this); // remove the old callback
+			if(running)
+			{
 			handler.postDelayed(this, delay); // register a new one
+			}
 		}
 		
 		public void onResume() 
@@ -622,7 +629,7 @@ public class Backend
 		Log.i(TAG, "a");
 		Iterator<Entry<String, Drone>> it = droneset.iterator();
 		Log.i(TAG, "b");
-		backendrunnable.onPause();
+		running=false;
 		while(it.hasNext())
 		{
 			Log.i(TAG, "c");
