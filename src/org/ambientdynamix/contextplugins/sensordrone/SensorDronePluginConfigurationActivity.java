@@ -29,12 +29,10 @@ import android.widget.TextView;
 
 public class SensorDronePluginConfigurationActivity extends Activity implements IContextPluginConfigurationViewFactory
 {
-
-	String[] dronesArray = new String[12];
-	ListView dronelist;
-	ArrayAdapter<String> droneAdapter;
 	LinearLayout rootLayout;
+	LinearLayout listLayout;
 	private static final String TAG = "Sensordrone";
+	private Context ctx;
 	
 	@Override
 	public void destroyView() throws Exception 
@@ -48,6 +46,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 			throws Exception 
 	{
 		Log.i("Sensordrone", "initialize Views 6");
+		ctx=context;
 		// Discover our screen size for proper formatting 
 		DisplayMetrics met = context.getResources().getDisplayMetrics();
 
@@ -68,10 +67,9 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
             }
         });
 		
-		Log.i("Sensordrone", "now to the list");
-		dronelist = new ListView(context);
-		droneAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, dronesArray);
-		dronelist.setAdapter(droneAdapter);
+		Log.i("Sensordrone", "now to the list b");
+		listLayout = new LinearLayout(context);
+		listLayout.setOrientation(LinearLayout.VERTICAL);
 		
         Button b = new Button(context);
         b.setText("Search");
@@ -107,7 +105,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
         		FrameLayout.LayoutParams.WRAP_CONTENT));
         
         //add drone 1 textview
-        rootLayout.addView(dronelist, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+        rootLayout.addView(listLayout, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
         		FrameLayout.LayoutParams.WRAP_CONTENT));
 
         //buttons
@@ -124,17 +122,17 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 		Set<Entry<String, Drone>> droneset = drones.entrySet();
 		Iterator<Entry<String, Drone>> it = droneset.iterator();
 		int counter = 0;
-		for(int i=0; i<dronesArray.length; i++)
-		{
-			dronesArray[i]=""; 	
-		}
+		listLayout.removeAllViews();
 		while(it.hasNext())
 		{
 			Entry<String, Drone> dentry = it.next();
 			Drone d = dentry.getValue();
-			dronesArray[counter]=""+d.lastMAC;
+			TextView tv = new TextView(ctx);
+			tv.setText(""+d.lastMAC);
+	        listLayout.addView(tv, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+	        		FrameLayout.LayoutParams.WRAP_CONTENT));       
 		}
-		droneAdapter.notifyDataSetChanged();
+
 	}
 	
 	
