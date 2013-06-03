@@ -128,9 +128,15 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 			Entry<String, Drone> dentry = it.next();
 			Drone d = dentry.getValue();
 			TextView tv = new TextView(ctx);
-			tv.setText((counter+1)+""+d.lastMAC);
+			tv.setText((counter+1)+": "+d.lastMAC);
+			tv.setBackgroundColor(0x00ff0000);
+			tv.setTextSize(20);
+			TextView v1 = new TextView(ctx);
+			v1.setText(""+d.temperature_Celcius+" C");
 	        listLayout.addView(tv, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
 	        		FrameLayout.LayoutParams.WRAP_CONTENT));       
+	        listLayout.addView(v1, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+	        		FrameLayout.LayoutParams.WRAP_CONTENT));   
 		}
 
 	}
