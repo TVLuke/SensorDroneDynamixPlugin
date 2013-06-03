@@ -32,7 +32,7 @@ public class Backend
 	private static HashMap<String, ArrayList<SDStreamer>> streamers;
 	private BroadcastReceiver mBluetoothReceiver;
 	private BluetoothAdapter mBluetoothAdapter;
-	BackendRunner backendrunnable;
+	static BackendRunner backendrunnable;
 	private IntentFilter btFilter;
 	Context ctx;
 	private static boolean running=false;
@@ -550,56 +550,56 @@ public class Backend
 		@Override
 		public void run() 
 		{
-			Log.i(TAG, "drones size"+drones.size());	
-			//TODO: Try to connect
-			Set<Entry<String, Drone>> droneset = drones.entrySet();
-			Iterator<Entry<String, Drone>> it = droneset.iterator();
-	    	Set<BluetoothDevice> bondeddevices = mBluetoothAdapter.getBondedDevices();
-			while(it.hasNext())
-			{
-				Entry<String, Drone> dentry = it.next();
-				Drone d = dentry.getValue();
-				if(!d.isConnected)
+				Log.i(TAG, "drones size"+drones.size());	
+				//TODO: Try to connect
+				Set<Entry<String, Drone>> droneset = drones.entrySet();
+				Iterator<Entry<String, Drone>> it = droneset.iterator();
+		    	Set<BluetoothDevice> bondeddevices = mBluetoothAdapter.getBondedDevices();
+				while(it.hasNext())
 				{
-					if(!d.btConnect(dentry.getKey()))
+					Entry<String, Drone> dentry = it.next();
+					Drone d = dentry.getValue();
+					if(!d.isConnected)
 					{
-						Log.i(TAG, "could not connect");
+						if(!d.btConnect(dentry.getKey()))
+						{
+							Log.i(TAG, "could not connect");
+						}
+						else
+						{
+	
+						}
 					}
 					else
 					{
-
-					}
-				}
-				else
-				{
-					//TODO: the device-representation is connected, however, it may have gotten out of range and that may not be known or something, so we better check in the list of bonded devices
-					Iterator<BluetoothDevice> bit = bondeddevices.iterator();
-					boolean actuallyconnected=false;
-					while(bit.hasNext())
-					{
-						BluetoothDevice div = bit.next();
-						if(div.getAddress().equals(dentry.getKey()))
+						//TODO: the device-representation is connected, however, it may have gotten out of range and that may not be known or something, so we better check in the list of bonded devices
+						Iterator<BluetoothDevice> bit = bondeddevices.iterator();
+						boolean actuallyconnected=false;
+						while(bit.hasNext())
 						{
-							//the adress of this device was actually in the list
-							actuallyconnected=true;
+							BluetoothDevice div = bit.next();
+							if(div.getAddress().equals(dentry.getKey()))
+							{
+								//the adress of this device was actually in the list
+								actuallyconnected=true;
+							}
+						}
+						if(!actuallyconnected)//it wasn't found under the bonded divices.
+						{
+							d.disconnect();
 						}
 					}
-					if(!actuallyconnected)//it wasn't found under the bonded divices.
-					{
-						d.disconnect();
-					}
+					Log.i(TAG, "is it connected? "+d.isConnected);
 				}
-				Log.i(TAG, "is it connected? "+d.isConnected);
-			}
-			try 
-			{
-				Thread.sleep(2000);
-			} 
-			catch (InterruptedException e) 
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				try 
+				{
+					Thread.sleep(2000);
+				} 
+				catch (InterruptedException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			handler.removeCallbacks(this); // remove the old callback
 			handler.postDelayed(this, delay); // register a new one
 		}
@@ -622,6 +622,7 @@ public class Backend
 		Log.i(TAG, "a");
 		Iterator<Entry<String, Drone>> it = droneset.iterator();
 		Log.i(TAG, "b");
+		backendrunnable.onPause();
 		while(it.hasNext())
 		{
 			Log.i(TAG, "c");
@@ -634,7 +635,7 @@ public class Backend
 			Log.i(TAG, "is it connected? "+d.isConnected);
 			Log.i(TAG, "g");
 		}
-		running=false;
+	
 	}
 
 	public static HashMap<String, Drone> getDroneList() 
