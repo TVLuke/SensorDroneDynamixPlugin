@@ -395,6 +395,12 @@ public class Backend
 				drone.quickDisable(drone.QS_TYPE_ADC);
 
 				blinkerarray.get(drone.lastMAC).disable();
+				
+				ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
+				for(int i=0; i<sensortypes.length; i++)
+				{
+					sarray.get(i).disable();
+				}
 			}
 
 			@Override
@@ -425,6 +431,12 @@ public class Backend
 				drone.quickDisable(drone.QS_TYPE_ADC);
 				
 				blinkerarray.get(drone.lastMAC).disable();	
+				
+				ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
+				for(int i=0; i<sensortypes.length; i++)
+				{
+					sarray.get(i).disable();
+				}
 			}
 
 			@Override
