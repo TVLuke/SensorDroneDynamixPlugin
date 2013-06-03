@@ -128,7 +128,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 			Entry<String, Drone> dentry = it.next();
 			Drone d = dentry.getValue();
 			TextView tv = new TextView(ctx);
-			tv.setText(""+d.lastMAC);
+			tv.setText((counter+1)+""+d.lastMAC);
 	        listLayout.addView(tv, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
 	        		FrameLayout.LayoutParams.WRAP_CONTENT));       
 		}

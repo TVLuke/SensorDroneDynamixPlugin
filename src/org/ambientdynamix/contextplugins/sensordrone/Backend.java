@@ -34,7 +34,7 @@ public class Backend
 	private BluetoothAdapter mBluetoothAdapter;
 	private IntentFilter btFilter;
 	Context ctx;
-	private static boolean running=false;
+	private static boolean running=true;
 	int[] sensortypes;
 	
 	public Backend(Context context)
