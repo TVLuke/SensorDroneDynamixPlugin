@@ -15,10 +15,15 @@
  */
 package org.ambientdynamix.contextplugins.sensordrone;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.ambientdynamix.api.application.IContextInfo;
+
+import com.sensorcon.sensordrone.Drone;
 
 import android.os.IBinder;
 import android.os.Parcel;
@@ -26,6 +31,8 @@ import android.os.Parcelable;
 
 class AmbientLightContextInfo implements IContextInfo, IAmbientLightContextInfo 
 {
+	double[] lightvalues;
+	
 	public static Parcelable.Creator<AmbientLightContextInfo> CREATOR = new Parcelable.Creator<AmbientLightContextInfo>() 
 		{
 		public AmbientLightContextInfo createFromParcel(Parcel in) 
@@ -52,7 +59,7 @@ class AmbientLightContextInfo implements IContextInfo, IAmbientLightContextInfo
 	@Override
 	public String getContextType() 
 	{
-		return "org.ambientdynamix.contextplugins.sensordrone";
+		return "org.ambientdynamix.contextplugins.ambientlight";
 	}
 
 	/* (non-Javadoc)
@@ -61,8 +68,13 @@ class AmbientLightContextInfo implements IContextInfo, IAmbientLightContextInfo
 	@Override
 	public String getStringRepresentation(String format) 
 	{
+		String result="";
+		for(int i=0; i<lightvalues.length; i++)
+		{
+			result=result+lightvalues[i]+" ";
+		}
 		if (format.equalsIgnoreCase("text/plain"))
-			return "";
+			return result;
 		else
 			return null;
 	}
@@ -89,12 +101,24 @@ class AmbientLightContextInfo implements IContextInfo, IAmbientLightContextInfo
 
 	public AmbientLightContextInfo()
 	{
-		
+		HashMap<String, Drone> drones = Backend.getDroneList();
+		if(drones!=null)
+		{
+			lightvalues = new double[drones.size()];
+			Set<Entry<String, Drone>> droneset = drones.entrySet();
+			Iterator<Entry<String, Drone>> it = droneset.iterator();
+			int counter=0;
+			while(it.hasNext())
+			{
+				lightvalues[counter]=it.next().getValue().rgbcLux;
+				counter++;
+			}
+		}
 	}
 
 	private AmbientLightContextInfo(final Parcel in) 
 	{
-		
+		in.readDoubleArray(lightvalues);
 	}
 
 	public IBinder asBinder() 
@@ -109,6 +133,13 @@ class AmbientLightContextInfo implements IContextInfo, IAmbientLightContextInfo
 
 	public void writeToParcel(Parcel out, int flags) 
 	{
-		
+		out.writeDoubleArray(getLuxValue());
 	}
+
+	@Override
+	public double[] getLuxValue() 
+	{
+		return lightvalues;
+	}
+	
 }
