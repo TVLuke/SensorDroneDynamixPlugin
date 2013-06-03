@@ -134,7 +134,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 			TextView v1 = new TextView(ctx);
 			v1.setText("   "+d.temperature_Celcius+" °C");
 			TextView v2 = new TextView(ctx);
-			v1.setText("   "+d.pressure_Pascals+" Pa");
+			v2.setText("   "+d.pressure_Pascals+" Pa");
 			TextView v3 = new TextView(ctx);
 			v3.setText("   "+d.rgbcLux+" lux");
 			TextView v4 = new TextView(ctx);
@@ -142,6 +142,8 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 	        listLayout.addView(tv, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
 	        		FrameLayout.LayoutParams.WRAP_CONTENT));       
 	        listLayout.addView(v1, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+	        		FrameLayout.LayoutParams.WRAP_CONTENT));   
+	        listLayout.addView(v2, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
 	        		FrameLayout.LayoutParams.WRAP_CONTENT));   
 	        listLayout.addView(v3, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
 	        		FrameLayout.LayoutParams.WRAP_CONTENT));   
