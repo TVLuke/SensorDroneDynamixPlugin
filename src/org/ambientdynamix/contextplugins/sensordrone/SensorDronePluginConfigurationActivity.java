@@ -30,7 +30,7 @@ import android.widget.TextView;
 public class SensorDronePluginConfigurationActivity extends Activity implements IContextPluginConfigurationViewFactory
 {
 
-	String[] dronesArray = {""};
+	String[] dronesArray = new String[12];
 	ListView dronelist;
 	ArrayAdapter<String> droneAdapter;
 	LinearLayout rootLayout;
@@ -68,7 +68,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
             }
         });
 		
-		
+		Log.i("Sensordrone", "now to the list");
 		dronelist = new ListView(context);
 		droneAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, dronesArray);
 		dronelist.setAdapter(droneAdapter);
@@ -124,6 +124,10 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 		Set<Entry<String, Drone>> droneset = drones.entrySet();
 		Iterator<Entry<String, Drone>> it = droneset.iterator();
 		int counter = 0;
+		for(int i=0; i<dronesArray.length; i++)
+		{
+			dronesArray[i]=""; 	
+		}
 		while(it.hasNext())
 		{
 			Entry<String, Drone> dentry = it.next();
