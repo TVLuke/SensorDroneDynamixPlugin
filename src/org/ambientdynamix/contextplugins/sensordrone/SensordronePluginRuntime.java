@@ -12,7 +12,7 @@ import android.util.Log;
 
 public class SensordronePluginRuntime extends ReactiveContextPluginRuntime
 {
-	private final String TAG = "REDDOT";
+	private final String TAG = "Sensordrone";
 
 	@Override
 	public void start() 
@@ -20,6 +20,8 @@ public class SensordronePluginRuntime extends ReactiveContextPluginRuntime
 		/*
 		 * Nothing to do, since this is a pull plug-in... we're now waiting for context scan requests.
 		 */
+
+    	Backend backend = new Backend(this.getSecuredContext());
 		Log.i(TAG, "Started!");
 	}
 

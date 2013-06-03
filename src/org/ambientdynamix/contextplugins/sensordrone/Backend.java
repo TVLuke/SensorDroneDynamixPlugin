@@ -395,6 +395,10 @@ public class Backend
 				drone.quickDisable(drone.QS_TYPE_ADC);
 
 				blinkerarray.get(drone.lastMAC).disable();
+				blinkerarray.put(drone.lastMAC, new ConnectionBlinker(drone, 1000, 0, 0, 000));
+				blinkerarray.get(drone.lastMAC).enable();
+				blinkerarray.get(drone.lastMAC).run();
+				blinkerarray.get(drone.lastMAC).disable();
 				
 				ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
 				for(int i=0; i<sensortypes.length; i++)
@@ -430,7 +434,11 @@ public class Backend
 				drone.disableADC();
 				drone.quickDisable(drone.QS_TYPE_ADC);
 				
-				blinkerarray.get(drone.lastMAC).disable();	
+				blinkerarray.get(drone.lastMAC).disable();
+				blinkerarray.put(drone.lastMAC, new ConnectionBlinker(drone, 1000, 0, 0, 000));
+				blinkerarray.get(drone.lastMAC).enable();
+				blinkerarray.get(drone.lastMAC).run();
+				blinkerarray.get(drone.lastMAC).disable();
 				
 				ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
 				for(int i=0; i<sensortypes.length; i++)
@@ -446,7 +454,7 @@ public class Backend
 				SDStreamer s = sarray.get(1);
 				s.streamHandler.postDelayed(s, 10000);	
 				Log.i(TAG, "sensordrone Humidity % "+drone.humidity_Percent);
-				
+			
 			}
 
 			@Override

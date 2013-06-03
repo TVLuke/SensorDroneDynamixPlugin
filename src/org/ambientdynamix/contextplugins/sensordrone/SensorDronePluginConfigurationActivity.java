@@ -53,6 +53,10 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 		// Access our Locale via the incoming context's resource configuration to determine language
 		String language = context.getResources().getConfiguration().locale.getDisplayLanguage();
 		
+        final TextView searching = new TextView(ctx);
+        searching.setText("");
+        searching.setText("scanning...");
+        
 		// Main layout. 
 		rootLayout = new LinearLayout(context);
 		rootLayout.setOrientation(LinearLayout.VERTICAL);
@@ -70,10 +74,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 		Log.i("Sensordrone", "now to the list b");
 		listLayout = new LinearLayout(context);
 		listLayout.setOrientation(LinearLayout.VERTICAL);
-		
-        final TextView searching = new TextView(ctx);
-        searching.setText("");
-        
+		       
         Button b = new Button(context);
         b.setText("Search");
         b.setOnClickListener(new View.OnClickListener() 
@@ -81,8 +82,6 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
             public void onClick(View v)
             {
             	Log.i("Sensordrone", "pressed the button 6");
-            	Backend backend = new Backend(context);
-                searching.setText("searching...");
             }
         });
 
@@ -115,8 +114,8 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
         		FrameLayout.LayoutParams.WRAP_CONTENT));
 
         //buttons
-        rootLayout.addView(b, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-        		FrameLayout.LayoutParams.WRAP_CONTENT));
+        //rootLayout.addView(b, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+        //		FrameLayout.LayoutParams.WRAP_CONTENT));
         
         rootLayout.addView(searching,  new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
         		FrameLayout.LayoutParams.WRAP_CONTENT));
