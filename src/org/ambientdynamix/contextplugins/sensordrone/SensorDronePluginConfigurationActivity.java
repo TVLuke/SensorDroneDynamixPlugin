@@ -108,14 +108,12 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 	{
 
 		private Handler handler = new Handler();
-		private int delay=1000;
+		private int delay=3000;
 		
 		@Override
 		public void run() 
 		{
 			// TODO Auto-generated method stub
-			handler.removeCallbacks(this); // remove the old callback
-			handler.postDelayed(this, delay); // register a new one
 			Log.i(TAG, "child count"+rootLayout.getChildCount());
 			for(int i=0; i<rootLayout.getChildCount(); i++)
 			{
@@ -134,6 +132,8 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 				Log.i(TAG, "PAscal Pressure via. UI Thread: "+d.pressure_Pascals);
 				
 			}
+			handler.removeCallbacks(this); // remove the old callback
+			handler.postDelayed(this, delay); // register a new one
 		}
 		
 		public void onResume() 
