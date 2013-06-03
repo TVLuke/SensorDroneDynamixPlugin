@@ -99,8 +99,6 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
         		FrameLayout.LayoutParams.WRAP_CONTENT));
         rootLayout.addView(b2, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
         		FrameLayout.LayoutParams.WRAP_CONTENT));        
-        Thread x = new Thread(new UIUpdater());
-        x.start();
 		return rootLayout;
 	}
 	
@@ -109,11 +107,6 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 
 		private Handler handler = new Handler();
 		private int delay=3000;
-		
-		public UIUpdater()
-		{
-			run();
-		}
 		
 		@Override
 		public void run() 

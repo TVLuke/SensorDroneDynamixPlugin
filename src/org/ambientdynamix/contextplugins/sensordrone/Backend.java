@@ -348,6 +348,10 @@ public class Backend
 				drone.quickEnable(drone.QS_TYPE_HUMIDITY);
 				drone.measureHumidity();
 				
+				drone.enableADC();
+				drone.quickEnable(drone.QS_TYPE_ADC);
+				drone.measureExternalADC();
+				
 				blinkerarray.get(drone.lastMAC).enable();
 				blinkerarray.get(drone.lastMAC).run();
 				
@@ -375,6 +379,9 @@ public class Backend
 				
 				drone.disableHumidity();
 				drone.quickDisable(drone.QS_TYPE_HUMIDITY);	
+				
+				drone.disableADC();
+				drone.quickDisable(drone.QS_TYPE_ADC);
 
 				blinkerarray.get(drone.lastMAC).disable();
 			}
@@ -402,6 +409,9 @@ public class Backend
 				
 				drone.disableHumidity();
 				drone.quickDisable(drone.QS_TYPE_HUMIDITY);	
+				
+				drone.disableADC();
+				drone.quickDisable(drone.QS_TYPE_ADC);
 				
 				blinkerarray.get(drone.lastMAC).disable();	
 			}
@@ -469,7 +479,7 @@ public class Backend
 				ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
 				SDStreamer s = sarray.get(4);
 				s.streamHandler.postDelayed(s, 10000);
-				Log.i(TAG, "sensordrone pressure level in Pa "+drone.rgbcLux);//TODO
+				Log.i(TAG, "sensordrone lux "+drone.rgbcLux);
 			}
 
 			@Override
