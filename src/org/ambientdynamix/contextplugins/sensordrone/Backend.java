@@ -44,6 +44,7 @@ public class Backend
 		Log.i(TAG, "starting backend process");
 		drones = new HashMap<String, Drone>(); 
 		streamers = new HashMap<String, ArrayList<SDStreamer>>();
+		blinkerarray = new HashMap<String, ConnectionBlinker>();
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 	    if (!mBluetoothAdapter.isEnabled()) 
 	    {
@@ -80,6 +81,16 @@ public class Backend
 	    {
 			// Don't proceed until the user turns Bluetooth on.
 	    	Log.i(TAG, "wasn't on...");
+	    	try 
+	    	{
+				Thread.sleep(1000);//so that its on by the time we go to scanning... there might be other, better ways of doing this. probably.
+			} 
+	    	catch (InterruptedException e) 
+	    	{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	scanToConnect();
 			return;
 		}
 	    
