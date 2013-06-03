@@ -63,7 +63,7 @@ public class Backend
 	    { 
 	        //is enabled
 	    } 
-	    if(!running)
+	    if(running)
 	    {
 			scanToConnect();
 			Thread t1 = new Thread( new BackendRunner());
