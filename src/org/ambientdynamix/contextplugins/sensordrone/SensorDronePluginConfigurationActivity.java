@@ -38,7 +38,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 	public void destroyView() throws Exception 
 	{
 		// TODO Auto-generated method stub
-		Backend.disable();
+		//Backend.disable();
 	}
 
 	@Override
@@ -81,6 +81,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
         {
             public void onClick(View v)
             {
+            	Backend backend = new Backend(ctx);
             	Log.i("Sensordrone", "pressed the button 6");
             }
         });

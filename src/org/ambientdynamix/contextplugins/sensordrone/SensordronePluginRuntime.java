@@ -21,7 +21,6 @@ public class SensordronePluginRuntime extends ReactiveContextPluginRuntime
 		 * Nothing to do, since this is a pull plug-in... we're now waiting for context scan requests.
 		 */
 
-    	Backend backend = new Backend(this.getSecuredContext());
 		Log.i(TAG, "Started!");
 	}
 
@@ -67,9 +66,10 @@ public class SensordronePluginRuntime extends ReactiveContextPluginRuntime
 	}
 
 	@Override
-	public void init(PowerScheme arg0, ContextPluginSettings arg1) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void init(PowerScheme arg0, ContextPluginSettings arg1) throws Exception
+	{
+		Log.i("Sensordrone", "init");
+    	Backend backend = new Backend(this.getSecuredContext());
 	}
 
 	@Override
