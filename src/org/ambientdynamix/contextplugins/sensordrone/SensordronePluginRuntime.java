@@ -39,6 +39,7 @@ public class SensordronePluginRuntime extends ReactiveContextPluginRuntime
 		/*
 		 * At this point, the plug-in should release any resources.
 		 */
+		Backend.disable();
 		stop();
 		Log.i(TAG, "Destroyed!");
 	}

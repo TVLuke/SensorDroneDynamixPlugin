@@ -660,5 +660,10 @@ public class Backend
 		
 	}
 	
+	public static boolean isRunning()
+	{
+		return running;
+	}
+	
 
 }

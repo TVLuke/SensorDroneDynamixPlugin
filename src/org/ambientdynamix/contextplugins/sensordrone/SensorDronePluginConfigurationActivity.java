@@ -75,26 +75,34 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 		listLayout = new LinearLayout(context);
 		listLayout.setOrientation(LinearLayout.VERTICAL);
 		       
-        Button b = new Button(context);
-        b.setText("Search");
-        b.setOnClickListener(new View.OnClickListener() 
-        {
-            public void onClick(View v)
-            {
-            	Backend backend = new Backend(ctx);
-            	Log.i("Sensordrone", "pressed the button 6");
-            }
-        });
 
-        Button b2 = new Button(context);
-        b2.setText("StopAll");
+        final Button b2 = new Button(context);
+        if(Backend.isRunning())
+        {
+        	b2.setText("Stop Scanning");
+        }
+        else
+        {
+        	b2.setText("Start Scanning");
+        }
         b2.setOnClickListener(new View.OnClickListener() 
         {
             public void onClick(View v)
             {
-            	Log.i("Sensordrone", "pressed the button 5b");
-            	searching.setText("");
-            	Backend.disable();
+            	if(Backend.isRunning())
+            	{
+	            	Log.i("Sensordrone", "pressed the button 5b");
+	            	searching.setText("");
+	            	Backend.disable();
+	            	b2.setText("Start Scanning");
+            	}
+            	else
+            	{
+                	Backend backend = new Backend(ctx);
+                	Log.i("Sensordrone", "pressed the button 6");
+                	searching.setText("scanning...");
+                	b2.setText("Stop Scanning");
+            	}
             }
         });
         //Header
@@ -113,10 +121,6 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
         //add drone 1 textview
         rootLayout.addView(listLayout, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
         		FrameLayout.LayoutParams.WRAP_CONTENT));
-
-        //buttons
-        //rootLayout.addView(b, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-        //		FrameLayout.LayoutParams.WRAP_CONTENT));
         
         rootLayout.addView(searching,  new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
         		FrameLayout.LayoutParams.WRAP_CONTENT));
@@ -139,7 +143,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 			Drone d = dentry.getValue();
 			TextView tv = new TextView(ctx);
 			tv.setText((counter+1)+": "+d.lastMAC);
-			tv.setBackgroundColor(0x00ff0000);
+			tv.setBackgroundColor(0x0fff0000);
 			tv.setTextSize(20);
 			TextView v1 = new TextView(ctx);
 			v1.setText("   "+d.temperature_Celcius+" °C");
