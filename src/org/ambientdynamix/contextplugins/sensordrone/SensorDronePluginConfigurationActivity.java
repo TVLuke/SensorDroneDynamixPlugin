@@ -99,8 +99,8 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
         		FrameLayout.LayoutParams.WRAP_CONTENT));
         rootLayout.addView(b2, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
         		FrameLayout.LayoutParams.WRAP_CONTENT));        
-        uiupdater = new UIUpdater();
-        uiupdater.run();
+        Thread x = new Thread(new UIUpdater());
+        x.start();
 		return rootLayout;
 	}
 	
@@ -109,6 +109,11 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 
 		private Handler handler = new Handler();
 		private int delay=3000;
+		
+		public UIUpdater()
+		{
+			run();
+		}
 		
 		@Override
 		public void run() 
@@ -129,7 +134,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 				Entry<String, Drone> dentry = it.next();
 				Drone d = dentry.getValue();
 				//put the drones into the text...
-				Log.i(TAG, "PAscal Pressure via. UI Thread: "+d.pressure_Pascals);
+				Log.i(TAG, "Pascal Pressure via. UI Thread: "+d.pressure_Pascals);
 				
 			}
 			handler.removeCallbacks(this); // remove the old callback
