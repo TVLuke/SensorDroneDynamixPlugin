@@ -93,10 +93,12 @@ public class AmbientTemperatureContextInfo implements IAmbientTemperatureContext
 			int counter=0;
 			while(it.hasNext())
 			{
+				Log.i("Sensordrone", it.next().getValue().temperature_Celcius+"");
 				tempvalue=tempvalue+it.next().getValue().temperature_Celcius;
 				counter++;
 			}
 			tempvalue=tempvalue/(counter);
+			Log.i("Sensordrone", "tempvalue="+tempvalue);
 		}
 	}
 
