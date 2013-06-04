@@ -62,6 +62,16 @@ public class SensordronePluginRuntime extends ReactiveContextPluginRuntime
 			SecuredContextInfo aci= new SecuredContextInfo(new AmbientLightContextInfo(), PrivacyRiskLevel.MEDIUM);
 			sendContextEvent(requestId, aci, 10000);
 		}
+		if(contextInfoType.equals("org.ambientdynamix.contextplugins.ambienttemperature"))
+		{
+			SecuredContextInfo aci= new SecuredContextInfo(new AmbientTemperatureContextInfo(), PrivacyRiskLevel.MEDIUM);
+			sendContextEvent(requestId, aci, 10000);
+		}
+		if(contextInfoType.equals("org.ambientdynamix.contextplugins.carbonmonoxide"))
+		{
+			SecuredContextInfo aci= new SecuredContextInfo(new CarbonMonoxideContextInfo(), PrivacyRiskLevel.MEDIUM);
+			sendContextEvent(requestId, aci, 10000);
+		}
 	}
 
 	@Override

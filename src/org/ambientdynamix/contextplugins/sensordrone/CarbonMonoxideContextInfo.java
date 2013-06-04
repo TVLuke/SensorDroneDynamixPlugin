@@ -6,8 +6,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.ambientdynamix.api.application.IContextInfo;
 import org.ambientdynamix.contextplugins.contextinterfaces.ICarbonMonoxideContextInfo;
-import org.ambientdynamix.contextplugins.contextinterfaces.IContextInfo;
 
 import com.sensorcon.sensordrone.Drone;
 
