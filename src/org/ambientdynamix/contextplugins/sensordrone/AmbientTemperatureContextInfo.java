@@ -94,7 +94,15 @@ public class AmbientTemperatureContextInfo implements IAmbientTemperatureContext
 			Iterator<Entry<String, Drone>> it = droneset.iterator();
 			Log.i("Sensordrone", "now for the counter");
 			int counter=0;
-			tempvalue=it.next().getValue().temperature_Celcius;
+			Drone d = it.next().getValue();
+			if(d.isConnected)
+			{
+				tempvalue=d.temperature_Celcius;
+			}
+			else
+			{
+				tempvalue=-999;
+			}
 			//while(it.hasNext())
 			//{
 			//	Log.i("Sensordrone", it.next().getValue().temperature_Celcius+" °C");
