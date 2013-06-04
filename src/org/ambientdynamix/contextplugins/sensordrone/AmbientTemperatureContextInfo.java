@@ -84,16 +84,19 @@ public class AmbientTemperatureContextInfo implements IAmbientTemperatureContext
 
 	public AmbientTemperatureContextInfo()
 	{
-		Log.i("Sensordrone", "generate temp context");
+		Log.i("Sensordrone", "generate temp context2");
 		HashMap<String, Drone> drones = Backend.getDroneList();
 		if(drones!=null)
 		{
+			Log.i("Sensordrone", "not null");
 			Set<Entry<String, Drone>> droneset = drones.entrySet();
+			Log.i("Sensordrone", "...");
 			Iterator<Entry<String, Drone>> it = droneset.iterator();
+			Log.i("Sensordrone", "now for the counter");
 			int counter=0;
 			while(it.hasNext())
 			{
-				Log.i("Sensordrone", it.next().getValue().temperature_Celcius+"");
+				Log.i("Sensordrone", it.next().getValue().temperature_Celcius+" °C");
 				tempvalue=tempvalue+it.next().getValue().temperature_Celcius;
 				Log.i("Sensordrone", "->");
 				counter++;
