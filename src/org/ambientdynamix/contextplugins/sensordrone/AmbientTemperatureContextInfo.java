@@ -18,7 +18,7 @@ import com.sensorcon.sensordrone.Drone;
 
 public class AmbientTemperatureContextInfo implements IAmbientTemperatureContextInfo, IContextInfo
 {
-	double tempvalue;
+	double tempvalue=-999;
 	
 	public static Parcelable.Creator<AmbientTemperatureContextInfo> CREATOR = new Parcelable.Creator<AmbientTemperatureContextInfo>() 
 		{
@@ -103,7 +103,11 @@ public class AmbientTemperatureContextInfo implements IAmbientTemperatureContext
 				Log.i("Sensordrone", "->>");
 			}
 			Log.i("Sensordrone", "tempvalue (1)="+tempvalue);
-			tempvalue=tempvalue/(counter);
+			if(counter>0)
+			{
+				
+				tempvalue=(tempvalue+999)/(counter);
+			}
 			Log.i("Sensordrone", "tempvalue (2)="+tempvalue);
 		}
 	}
