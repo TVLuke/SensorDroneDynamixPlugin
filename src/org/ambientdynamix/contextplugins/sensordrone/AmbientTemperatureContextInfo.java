@@ -18,7 +18,7 @@ import com.sensorcon.sensordrone.Drone;
 
 public class AmbientTemperatureContextInfo implements IAmbientTemperatureContextInfo, IContextInfo
 {
-	double[] tempvalues;
+	double tempvalue;
 	
 	public static Parcelable.Creator<AmbientTemperatureContextInfo> CREATOR = new Parcelable.Creator<AmbientTemperatureContextInfo>() 
 		{
@@ -55,11 +55,7 @@ public class AmbientTemperatureContextInfo implements IAmbientTemperatureContext
 	@Override
 	public String getStringRepresentation(String format) 
 	{
-		String result="";
-		for(int i=0; i<tempvalues.length; i++)
-		{
-			result=result+tempvalues[i]+" ";
-		}
+		String result=""+tempvalue;
 		if (format.equalsIgnoreCase("text/plain"))
 			return result;
 		else
@@ -92,21 +88,21 @@ public class AmbientTemperatureContextInfo implements IAmbientTemperatureContext
 		HashMap<String, Drone> drones = Backend.getDroneList();
 		if(drones!=null)
 		{
-			tempvalues = new double[drones.size()];
 			Set<Entry<String, Drone>> droneset = drones.entrySet();
 			Iterator<Entry<String, Drone>> it = droneset.iterator();
 			int counter=0;
 			while(it.hasNext())
 			{
-				tempvalues[counter]=it.next().getValue().temperature_Celcius;
+				tempvalue=tempvalue+it.next().getValue().temperature_Celcius;
 				counter++;
 			}
+			tempvalue=tempvalue/(counter);
 		}
 	}
 
 	private AmbientTemperatureContextInfo(final Parcel in) 
 	{
-		in.readDoubleArray(tempvalues);
+		tempvalue = in.readDouble();
 	}
 
 	public IBinder asBinder() 
@@ -121,13 +117,13 @@ public class AmbientTemperatureContextInfo implements IAmbientTemperatureContext
 
 	public void writeToParcel(Parcel out, int flags) 
 	{
-		out.writeDoubleArray(getTempValue());
+		out.writeDouble(tempvalue);
 	}
 
 	@Override
-	public double[] getTempValue() 
+	public double getTempValue() 
 	{
-		return tempvalues;
+		return tempvalue;
 	}
 	
 }
