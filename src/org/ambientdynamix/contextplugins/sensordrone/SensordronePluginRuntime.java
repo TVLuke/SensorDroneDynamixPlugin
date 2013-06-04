@@ -13,6 +13,7 @@ import android.util.Log;
 public class SensordronePluginRuntime extends ReactiveContextPluginRuntime
 {
 	private final String TAG = "Sensordrone";
+	Backend backend;
 
 	@Override
 	public void start() 
@@ -70,7 +71,8 @@ public class SensordronePluginRuntime extends ReactiveContextPluginRuntime
 	public void init(PowerScheme arg0, ContextPluginSettings arg1) throws Exception
 	{
 		Log.i("Sensordrone", "init");
-    	Backend backend = new Backend(this.getSecuredContext());
+    	backend = new Backend(this.getSecuredContext());
+    	this.getPluginFacade().setPluginConfiguredStatus(getSessionId(), true);
 	}
 
 	@Override
