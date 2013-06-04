@@ -33,7 +33,7 @@ import android.util.Log;
 
 class AmbientLightContextInfo implements IAmbientLightContextInfo, IContextInfo
 {
-	double[] lightvalues;
+	double[] lightvalues= new double[1];;
 	
 	public static Parcelable.Creator<AmbientLightContextInfo> CREATOR = new Parcelable.Creator<AmbientLightContextInfo>() 
 		{
@@ -121,7 +121,7 @@ class AmbientLightContextInfo implements IAmbientLightContextInfo, IContextInfo
 
 	private AmbientLightContextInfo(final Parcel in) 
 	{
-		in.readDoubleArray(lightvalues);
+		lightvalues = in.createDoubleArray();
 	}
 
 	public IBinder asBinder() 

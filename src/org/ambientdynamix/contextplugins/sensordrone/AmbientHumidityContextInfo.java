@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.ambientdynamix.api.application.IContextInfo;
-import org.ambientdynamix.contextplugins.contextinterfaces.ICarbonMonoxideContextInfo;
+import org.ambientdynamix.contextplugins.contextinterfaces.IAmbientHumidityContextInfo;
 
 import com.sensorcon.sensordrone.Drone;
 
@@ -16,60 +16,42 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-public class CarbonMonoxideContextInfo implements ICarbonMonoxideContextInfo, IContextInfo
+public class AmbientHumidityContextInfo  implements IAmbientHumidityContextInfo, IContextInfo
 {
 
-	double[] covalues= new double[1];;
+	double[] humidityvalues= new double[1];;
 	
-	public static Parcelable.Creator<CarbonMonoxideContextInfo> CREATOR = new Parcelable.Creator<CarbonMonoxideContextInfo>() 
+	public static Parcelable.Creator<AmbientHumidityContextInfo> CREATOR = new Parcelable.Creator<AmbientHumidityContextInfo>() 
 		{
-		public CarbonMonoxideContextInfo createFromParcel(Parcel in) 
+		public AmbientHumidityContextInfo createFromParcel(Parcel in) 
 		{
-			return new CarbonMonoxideContextInfo(in);
+			return new AmbientHumidityContextInfo(in);
 		}
 
-		public CarbonMonoxideContextInfo[] newArray(int size) 
+		public AmbientHumidityContextInfo[] newArray(int size) 
 		{
-			return new CarbonMonoxideContextInfo[size];
+			return new AmbientHumidityContextInfo[size];
 		}
 	};
 	
+	public AmbientHumidityContextInfo(Parcel in) 
+	{
+		humidityvalues = in.createDoubleArray();
+	}
+
 	@Override
 	public String toString() 
 	{
 		return this.getClass().getSimpleName();
 	};
 	
-	public CarbonMonoxideContextInfo(Parcel in) 
-	{
-		covalues = in.createDoubleArray();
-	}
-
 	/* (non-Javadoc)
 	 * @see org.ambientdynamix.contextplugins.ambientsound.IAmbientSoundContextInfo#getContextType()
 	 */
 	@Override
 	public String getContextType() 
 	{
-		return "org.ambientdynamix.contextplugins.carbonmonoxide";
-	}
-
-
-	/* (non-Javadoc)
-	 * @see org.ambientdynamix.contextplugins.ambientsound.IAmbientSoundContextInfo#getStringRepresentation(java.lang.String)
-	 */
-	@Override
-	public String getStringRepresentation(String format) 
-	{
-		String result="";
-		for(int i=0; i<covalues.length; i++)
-		{
-			result=result+covalues[i]+" ";
-		}
-		if (format.equalsIgnoreCase("text/plain"))
-			return result;
-		else
-			return null;
+		return "org.ambientdynamix.contextplugins.ambienthumidity";
 	}
 
 	/* (non-Javadoc)
@@ -79,6 +61,23 @@ public class CarbonMonoxideContextInfo implements ICarbonMonoxideContextInfo, IC
 	public String getImplementingClassname() 
 	{
 		return this.getClass().getName();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.ambientdynamix.contextplugins.ambientsound.IAmbientSoundContextInfo#getStringRepresentation(java.lang.String)
+	 */
+	@Override
+	public String getStringRepresentation(String format) 
+	{
+		String result="";
+		for(int i=0; i<humidityvalues.length; i++)
+		{
+			result=result+humidityvalues[i]+" ";
+		}
+		if (format.equalsIgnoreCase("text/plain"))
+			return result;
+		else
+			return null;
 	}
 
 	/* (non-Javadoc)
@@ -92,29 +91,30 @@ public class CarbonMonoxideContextInfo implements ICarbonMonoxideContextInfo, IC
 		return formats;
 	};
 	
-	public CarbonMonoxideContextInfo()
+	public AmbientHumidityContextInfo()
 	{
-		Log.i("Sensordrone", "generate CO context");
+		Log.i("Sensordrone", "generate light context");
 		HashMap<String, Drone> drones = Backend.getDroneList();
 		if(drones!=null)
 		{
-			covalues = new double[drones.size()];
+			humidityvalues = new double[drones.size()];
 			Set<Entry<String, Drone>> droneset = drones.entrySet();
 			Iterator<Entry<String, Drone>> it = droneset.iterator();
 			int counter=0;
 			while(it.hasNext())
 			{
-				covalues[counter]=it.next().getValue().precisionGas_ppmCarbonMonoxide;
+				humidityvalues[counter]=it.next().getValue().rgbcLux;
 				counter++;
 			}
 		}
 	}
 
+
 	public IBinder asBinder() 
 	{
 		return null;
 	}
-	
+
 	public int describeContents() 
 	{
 		return 0;
@@ -122,14 +122,14 @@ public class CarbonMonoxideContextInfo implements ICarbonMonoxideContextInfo, IC
 
 	public void writeToParcel(Parcel out, int flags) 
 	{
-		out.writeDoubleArray(getCOValue());
+		out.writeDoubleArray(getHumidityValue());
 	}
 
-
-	@Override
-	public double[] getCOValue()
-	{
-		return covalues;
-	}
 	
+	@Override
+	public double[] getHumidityValue() 
+	{
+		return humidityvalues;
+	}
+
 }
