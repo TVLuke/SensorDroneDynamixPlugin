@@ -3,6 +3,8 @@ package org.ambientdynamix.contextplugins.sensordrone;
 import java.util.UUID;
 
 import org.ambientdynamix.api.contextplugin.*;
+import org.ambientdynamix.api.contextplugin.security.PrivacyRiskLevel;
+import org.ambientdynamix.api.contextplugin.security.SecuredContextInfo;
 
 import android.content.Context;
 import android.content.Intent;
@@ -54,9 +56,12 @@ public class SensordronePluginRuntime extends ReactiveContextPluginRuntime
 	@Override
 	public void handleContextRequest(UUID requestId, String contextInfoType) 
 	{
-		Log.i(TAG, "red dot context requested3");
-
-		Log.i(TAG, "red dot end of method");
+		Log.i(TAG, "sensordrone context requested "+contextInfoType);
+		if(contextInfoType.equals("org.ambientdynamix.contextplugins.sensordrone"))
+		{
+			SecuredContextInfo aci= new SecuredContextInfo(new AmbientLightContextInfo(), PrivacyRiskLevel.MEDIUM);
+			this.sendContextEvent(requestId, aci, 10000);
+		}
 	}
 
 	@Override
