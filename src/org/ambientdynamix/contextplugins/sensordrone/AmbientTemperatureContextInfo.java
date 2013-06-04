@@ -84,7 +84,7 @@ public class AmbientTemperatureContextInfo implements IAmbientTemperatureContext
 
 	public AmbientTemperatureContextInfo()
 	{
-		Log.i("Sensordrone", "generate temp context2");
+		Log.i("Sensordrone", "generate temp context 3");
 		HashMap<String, Drone> drones = Backend.getDroneList();
 		if(drones!=null)
 		{
@@ -94,20 +94,21 @@ public class AmbientTemperatureContextInfo implements IAmbientTemperatureContext
 			Iterator<Entry<String, Drone>> it = droneset.iterator();
 			Log.i("Sensordrone", "now for the counter");
 			int counter=0;
-			while(it.hasNext())
-			{
-				Log.i("Sensordrone", it.next().getValue().temperature_Celcius+" °C");
-				tempvalue=tempvalue+it.next().getValue().temperature_Celcius;
-				Log.i("Sensordrone", "->");
-				counter++;
-				Log.i("Sensordrone", "->>");
-			}
-			Log.i("Sensordrone", "tempvalue (1)="+tempvalue);
-			if(counter>0)
-			{
-				
-				tempvalue=(tempvalue+999)/(counter);
-			}
+			tempvalue=it.next().getValue().temperature_Celcius;
+			//while(it.hasNext())
+			//{
+			//	Log.i("Sensordrone", it.next().getValue().temperature_Celcius+" °C");
+			//	tempvalue=tempvalue+it.next().getValue().temperature_Celcius;
+			//	Log.i("Sensordrone", "->");
+			//	counter++;
+			//	Log.i("Sensordrone", "->>");
+			//}
+			//Log.i("Sensordrone", "tempvalue (1)="+tempvalue);
+			//if(counter>0)
+			//{
+			//	
+			//	tempvalue=(tempvalue+999)/(counter);
+			//}
 			Log.i("Sensordrone", "tempvalue (2)="+tempvalue);
 		}
 	}
