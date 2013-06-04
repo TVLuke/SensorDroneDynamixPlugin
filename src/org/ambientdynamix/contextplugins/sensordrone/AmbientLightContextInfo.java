@@ -28,6 +28,7 @@ import com.sensorcon.sensordrone.Drone;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 class AmbientLightContextInfo implements IContextInfo, IAmbientLightContextInfo 
 {
@@ -101,6 +102,7 @@ class AmbientLightContextInfo implements IContextInfo, IAmbientLightContextInfo
 
 	public AmbientLightContextInfo()
 	{
+		Log.i("Sensordrone", "generate light context");
 		HashMap<String, Drone> drones = Backend.getDroneList();
 		if(drones!=null)
 		{

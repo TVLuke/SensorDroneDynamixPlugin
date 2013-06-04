@@ -57,10 +57,10 @@ public class SensordronePluginRuntime extends ReactiveContextPluginRuntime
 	public void handleContextRequest(UUID requestId, String contextInfoType) 
 	{
 		Log.i(TAG, "sensordrone context requested "+contextInfoType);
-		if(contextInfoType.equals("org.ambientdynamix.contextplugins.sensordrone"))
+		if(contextInfoType.equals("org.ambientdynamix.contextplugins.ambientlight"))
 		{
 			SecuredContextInfo aci= new SecuredContextInfo(new AmbientLightContextInfo(), PrivacyRiskLevel.MEDIUM);
-			this.sendContextEvent(requestId, aci, 10000);
+			sendContextEvent(requestId, aci, 10000);
 		}
 	}
 
