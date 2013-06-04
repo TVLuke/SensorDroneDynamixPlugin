@@ -73,7 +73,7 @@ public class SensordronePluginRuntime extends ReactiveContextPluginRuntime
 	}
 
 	@Override
-	public void init(PowerScheme arg0, ContextPluginSettings arg1) throws Exception
+	public void init(PowerScheme arg0, ContextPluginSettings arg1)  throws Exception
 	{
 		Log.i("Sensordrone", "init");
     	backend = new Backend(this.getSecuredContext());

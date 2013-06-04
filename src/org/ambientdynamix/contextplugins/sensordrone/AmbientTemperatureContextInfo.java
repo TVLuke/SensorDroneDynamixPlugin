@@ -1,18 +1,3 @@
-/*
- * Copyright (C) the Dynamix Framework Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.ambientdynamix.contextplugins.sensordrone;
 
 import java.util.HashMap;
@@ -22,29 +7,29 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.ambientdynamix.api.application.IContextInfo;
-import org.ambientdynamix.contextplugins.contextinterfaces.IAmbientLightContextInfo;
-
-import com.sensorcon.sensordrone.Drone;
+import org.ambientdynamix.contextplugins.contextinterfaces.IAmbientTemperatureContextInfo;
 
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-class AmbientLightContextInfo implements IAmbientLightContextInfo, IContextInfo
+import com.sensorcon.sensordrone.Drone;
+
+public class AmbientTemperatureContextInfo implements IAmbientTemperatureContextInfo, IContextInfo
 {
-	double[] lightvalues;
+	double[] tempvalues;
 	
-	public static Parcelable.Creator<AmbientLightContextInfo> CREATOR = new Parcelable.Creator<AmbientLightContextInfo>() 
+	public static Parcelable.Creator<AmbientTemperatureContextInfo> CREATOR = new Parcelable.Creator<AmbientTemperatureContextInfo>() 
 		{
-		public AmbientLightContextInfo createFromParcel(Parcel in) 
+		public AmbientTemperatureContextInfo createFromParcel(Parcel in) 
 		{
-			return new AmbientLightContextInfo(in);
+			return new AmbientTemperatureContextInfo(in);
 		}
 
-		public AmbientLightContextInfo[] newArray(int size) 
+		public AmbientTemperatureContextInfo[] newArray(int size) 
 		{
-			return new AmbientLightContextInfo[size];
+			return new AmbientTemperatureContextInfo[size];
 		}
 	};
 	
@@ -61,7 +46,7 @@ class AmbientLightContextInfo implements IAmbientLightContextInfo, IContextInfo
 	@Override
 	public String getContextType() 
 	{
-		return "org.ambientdynamix.contextplugins.ambientlight";
+		return "org.ambientdynamix.contextplugins.ambienttemperature";
 	}
 
 	/* (non-Javadoc)
@@ -71,9 +56,9 @@ class AmbientLightContextInfo implements IAmbientLightContextInfo, IContextInfo
 	public String getStringRepresentation(String format) 
 	{
 		String result="";
-		for(int i=0; i<lightvalues.length; i++)
+		for(int i=0; i<tempvalues.length; i++)
 		{
-			result=result+lightvalues[i]+" ";
+			result=result+tempvalues[i]+" ";
 		}
 		if (format.equalsIgnoreCase("text/plain"))
 			return result;
@@ -101,27 +86,27 @@ class AmbientLightContextInfo implements IAmbientLightContextInfo, IContextInfo
 		return formats;
 	};
 
-	public AmbientLightContextInfo()
+	public AmbientTemperatureContextInfo()
 	{
 		Log.i("Sensordrone", "generate light context");
 		HashMap<String, Drone> drones = Backend.getDroneList();
 		if(drones!=null)
 		{
-			lightvalues = new double[drones.size()];
+			tempvalues = new double[drones.size()];
 			Set<Entry<String, Drone>> droneset = drones.entrySet();
 			Iterator<Entry<String, Drone>> it = droneset.iterator();
 			int counter=0;
 			while(it.hasNext())
 			{
-				lightvalues[counter]=it.next().getValue().rgbcLux;
+				tempvalues[counter]=it.next().getValue().temperature_Celcius;
 				counter++;
 			}
 		}
 	}
 
-	private AmbientLightContextInfo(final Parcel in) 
+	private AmbientTemperatureContextInfo(final Parcel in) 
 	{
-		in.readDoubleArray(lightvalues);
+		in.readDoubleArray(tempvalues);
 	}
 
 	public IBinder asBinder() 
@@ -136,13 +121,14 @@ class AmbientLightContextInfo implements IAmbientLightContextInfo, IContextInfo
 
 	public void writeToParcel(Parcel out, int flags) 
 	{
-		out.writeDoubleArray(getLuxValue());
+		out.writeDoubleArray(getTempValue());
 	}
 
 	@Override
-	public double[] getLuxValue() 
+	public double[] getTempValue() 
 	{
-		return lightvalues;
+		return tempvalues;
 	}
 	
 }
+

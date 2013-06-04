@@ -1,18 +1,3 @@
-/*
- * Copyright (C) the Dynamix Framework Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.ambientdynamix.contextplugins.sensordrone;
 
 import java.util.HashMap;
@@ -21,8 +6,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import org.ambientdynamix.api.application.IContextInfo;
-import org.ambientdynamix.contextplugins.contextinterfaces.IAmbientLightContextInfo;
+import org.ambientdynamix.contextplugins.contextinterfaces.ICarbonMonoxideContextInfo;
+import org.ambientdynamix.contextplugins.contextinterfaces.IContextInfo;
 
 import com.sensorcon.sensordrone.Drone;
 
@@ -31,29 +16,34 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-class AmbientLightContextInfo implements IAmbientLightContextInfo, IContextInfo
+public class CarbonMonoxideContextInfo implements ICarbonMonoxideContextInfo, IContextInfo
 {
-	double[] lightvalues;
+
+	double[] covalues;
 	
-	public static Parcelable.Creator<AmbientLightContextInfo> CREATOR = new Parcelable.Creator<AmbientLightContextInfo>() 
+	public static Parcelable.Creator<CarbonMonoxideContextInfo> CREATOR = new Parcelable.Creator<CarbonMonoxideContextInfo>() 
 		{
-		public AmbientLightContextInfo createFromParcel(Parcel in) 
+		public CarbonMonoxideContextInfo createFromParcel(Parcel in) 
 		{
-			return new AmbientLightContextInfo(in);
+			return new CarbonMonoxideContextInfo(in);
 		}
 
-		public AmbientLightContextInfo[] newArray(int size) 
+		public CarbonMonoxideContextInfo[] newArray(int size) 
 		{
-			return new AmbientLightContextInfo[size];
+			return new CarbonMonoxideContextInfo[size];
 		}
 	};
 	
-
 	@Override
 	public String toString() 
 	{
 		return this.getClass().getSimpleName();
 	};
+	
+	public CarbonMonoxideContextInfo(Parcel in) 
+	{
+		in.readDoubleArray(covalues);
+	}
 
 	/* (non-Javadoc)
 	 * @see org.ambientdynamix.contextplugins.ambientsound.IAmbientSoundContextInfo#getContextType()
@@ -61,8 +51,9 @@ class AmbientLightContextInfo implements IAmbientLightContextInfo, IContextInfo
 	@Override
 	public String getContextType() 
 	{
-		return "org.ambientdynamix.contextplugins.ambientlight";
+		return "org.ambientdynamix.contextplugins.carbonmonoxide";
 	}
+
 
 	/* (non-Javadoc)
 	 * @see org.ambientdynamix.contextplugins.ambientsound.IAmbientSoundContextInfo#getStringRepresentation(java.lang.String)
@@ -71,9 +62,9 @@ class AmbientLightContextInfo implements IAmbientLightContextInfo, IContextInfo
 	public String getStringRepresentation(String format) 
 	{
 		String result="";
-		for(int i=0; i<lightvalues.length; i++)
+		for(int i=0; i<covalues.length; i++)
 		{
-			result=result+lightvalues[i]+" ";
+			result=result+covalues[i]+" ";
 		}
 		if (format.equalsIgnoreCase("text/plain"))
 			return result;
@@ -100,35 +91,30 @@ class AmbientLightContextInfo implements IAmbientLightContextInfo, IContextInfo
 		formats.add("text/plain");
 		return formats;
 	};
-
-	public AmbientLightContextInfo()
+	
+	public CarbonMonoxideContextInfo()
 	{
-		Log.i("Sensordrone", "generate light context");
+		Log.i("Sensordrone", "generate CO context");
 		HashMap<String, Drone> drones = Backend.getDroneList();
 		if(drones!=null)
 		{
-			lightvalues = new double[drones.size()];
+			covalues = new double[drones.size()];
 			Set<Entry<String, Drone>> droneset = drones.entrySet();
 			Iterator<Entry<String, Drone>> it = droneset.iterator();
 			int counter=0;
 			while(it.hasNext())
 			{
-				lightvalues[counter]=it.next().getValue().rgbcLux;
+				covalues[counter]=it.next().getValue().precisionGas_ppmCarbonMonoxide;
 				counter++;
 			}
 		}
-	}
-
-	private AmbientLightContextInfo(final Parcel in) 
-	{
-		in.readDoubleArray(lightvalues);
 	}
 
 	public IBinder asBinder() 
 	{
 		return null;
 	}
-
+	
 	public int describeContents() 
 	{
 		return 0;
@@ -136,13 +122,14 @@ class AmbientLightContextInfo implements IAmbientLightContextInfo, IContextInfo
 
 	public void writeToParcel(Parcel out, int flags) 
 	{
-		out.writeDoubleArray(getLuxValue());
+		out.writeDoubleArray(getCOValue());
 	}
 
+
 	@Override
-	public double[] getLuxValue() 
+	public double[] getCOValue()
 	{
-		return lightvalues;
+		return covalues;
 	}
 	
 }

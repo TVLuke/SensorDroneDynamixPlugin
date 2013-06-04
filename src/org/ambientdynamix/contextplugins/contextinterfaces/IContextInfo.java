@@ -1,4 +1,4 @@
-package org.ambientdynamix.contextplugins.sensordrone;
+package org.ambientdynamix.contextplugins.contextinterfaces;
 
 import java.util.Set;
 

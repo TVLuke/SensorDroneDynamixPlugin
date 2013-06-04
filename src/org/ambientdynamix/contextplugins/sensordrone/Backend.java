@@ -344,23 +344,23 @@ public class Backend
 			{
 				Log.i(TAG, "sensordrone connection event");
 				drone.enableTemperature();
-				drone.quickEnable(drone.QS_TYPE_TEMPERATURE);
+				//drone.quickEnable(drone.QS_TYPE_TEMPERATURE);
 				drone.measureTemperature();
 				
 				drone.enablePressure();
-				drone.quickEnable(drone.QS_TYPE_PRESSURE);
+				//drone.quickEnable(drone.QS_TYPE_PRESSURE);
 				drone.measurePressure();
 				
 				drone.enableRGBC();
-				drone.quickEnable(drone.QS_TYPE_RGBC);
+				//drone.quickEnable(drone.QS_TYPE_RGBC);
 				drone.measureRGBC();
 				
 				drone.enableHumidity();
-				drone.quickEnable(drone.QS_TYPE_HUMIDITY);
+				//drone.quickEnable(drone.QS_TYPE_HUMIDITY);
 				drone.measureHumidity();
 				
 				drone.enableADC();
-				drone.quickEnable(drone.QS_TYPE_ADC);
+				//drone.quickEnable(drone.QS_TYPE_ADC);
 				drone.measureExternalADC();
 				
 				blinkerarray.get(drone.lastMAC).enable();
