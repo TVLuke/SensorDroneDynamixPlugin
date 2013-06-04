@@ -137,7 +137,7 @@ public class AmbientTemperatureContextInfo implements IAmbientTemperatureContext
 	}
 
 	@Override
-	public double[] getTempValue() 
+	public double[] getCelciusValue() 
 	{
 		return tempvalues;
 	}

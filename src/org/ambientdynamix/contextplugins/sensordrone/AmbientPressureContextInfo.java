@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.ambientdynamix.api.application.IContextInfo;
-import org.ambientdynamix.contextplugins.contextinterfaces.IAmbientHumidityContextInfo;
+import org.ambientdynamix.contextplugins.contextinterfaces.IAmbientPressureContextInfo;
 
 import com.sensorcon.sensordrone.Drone;
 
@@ -16,42 +16,77 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-public class AmbientHumidityContextInfo  implements IAmbientHumidityContextInfo, IContextInfo
-{
+public class AmbientPressureContextInfo implements IAmbientPressureContextInfo, IContextInfo{
 
-	double[] humidityvalues= new double[1];;
+double[] pressurevalues= new double[1];;
 	
-	public static Parcelable.Creator<AmbientHumidityContextInfo> CREATOR = new Parcelable.Creator<AmbientHumidityContextInfo>() 
+	public static Parcelable.Creator<AmbientPressureContextInfo> CREATOR = new Parcelable.Creator<AmbientPressureContextInfo>() 
 		{
-		public AmbientHumidityContextInfo createFromParcel(Parcel in) 
+		public AmbientPressureContextInfo createFromParcel(Parcel in) 
 		{
-			return new AmbientHumidityContextInfo(in);
+			return new AmbientPressureContextInfo(in);
 		}
 
-		public AmbientHumidityContextInfo[] newArray(int size) 
+		public AmbientPressureContextInfo[] newArray(int size) 
 		{
-			return new AmbientHumidityContextInfo[size];
+			return new AmbientPressureContextInfo[size];
 		}
 	};
 	
-	public AmbientHumidityContextInfo(Parcel in) 
-	{
-		humidityvalues = in.createDoubleArray();
-	}
-
 	@Override
 	public String toString() 
 	{
 		return this.getClass().getSimpleName();
 	};
 	
+	public AmbientPressureContextInfo(Parcel in) 
+	{
+		pressurevalues = in.createDoubleArray();
+	}
+
+	public AmbientPressureContextInfo()
+	{
+		Log.i("Sensordrone", "generate pressure context");
+		HashMap<String, Drone> drones = Backend.getDroneList();
+		if(drones!=null)
+		{
+			pressurevalues = new double[drones.size()];
+			Set<Entry<String, Drone>> droneset = drones.entrySet();
+			Iterator<Entry<String, Drone>> it = droneset.iterator();
+			int counter=0;
+			while(it.hasNext())
+			{
+				pressurevalues[counter]=it.next().getValue().pressure_Pascals;
+				counter++;
+			}
+		}
+	}
+	
+	@Override
+	public double[] getPaValue() 
+	{
+		return pressurevalues;
+	}
+
+	public int describeContents() 
+	{
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int flags) 
+	{
+		out.writeDoubleArray(getPaValue());
+		
+	}
+
 	/* (non-Javadoc)
 	 * @see org.ambientdynamix.contextplugins.ambientsound.IAmbientSoundContextInfo#getContextType()
 	 */
 	@Override
 	public String getContextType() 
 	{
-		return "org.ambientdynamix.contextplugins.ambienthumidity";
+		return "org.ambientdynamix.contextplugins.ambientpressure";
 	}
 
 	/* (non-Javadoc)
@@ -70,16 +105,16 @@ public class AmbientHumidityContextInfo  implements IAmbientHumidityContextInfo,
 	public String getStringRepresentation(String format) 
 	{
 		String result="";
-		for(int i=0; i<humidityvalues.length; i++)
+		for(int i=0; i<pressurevalues.length; i++)
 		{
-			result=result+humidityvalues[i]+" ";
+			result=result+pressurevalues[i]+" ";
 		}
 		if (format.equalsIgnoreCase("text/plain"))
 			return result;
 		else
 			return null;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.ambientdynamix.contextplugins.ambientsound.IAmbientSoundContextInfo#getStringRepresentationFormats()
 	 */
@@ -91,45 +126,9 @@ public class AmbientHumidityContextInfo  implements IAmbientHumidityContextInfo,
 		return formats;
 	};
 	
-	public AmbientHumidityContextInfo()
-	{
-		Log.i("Sensordrone", "generate light context");
-		HashMap<String, Drone> drones = Backend.getDroneList();
-		if(drones!=null)
-		{
-			humidityvalues = new double[drones.size()];
-			Set<Entry<String, Drone>> droneset = drones.entrySet();
-			Iterator<Entry<String, Drone>> it = droneset.iterator();
-			int counter=0;
-			while(it.hasNext())
-			{
-				humidityvalues[counter]=it.next().getValue().humidity_Percent;
-				counter++;
-			}
-		}
-	}
-
-
 	public IBinder asBinder() 
 	{
 		return null;
-	}
-
-	public int describeContents() 
-	{
-		return 0;
-	}
-
-	public void writeToParcel(Parcel out, int flags) 
-	{
-		out.writeDoubleArray(getHumidityValue());
-	}
-
-	
-	@Override
-	public double[] getHumidityValue() 
-	{
-		return humidityvalues;
 	}
 
 }

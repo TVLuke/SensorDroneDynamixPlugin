@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.ambientdynamix.api.application.IContextInfo;
-import org.ambientdynamix.contextplugins.contextinterfaces.ICarbonMonoxideContextInfo;
+import org.ambientdynamix.contextplugins.contextinterfaces.IAmbientCarbonMonoxideContextInfo;
 
 import com.sensorcon.sensordrone.Drone;
 
@@ -16,21 +16,21 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-public class CarbonMonoxideContextInfo implements ICarbonMonoxideContextInfo, IContextInfo
+public class AmbientCarbonMonoxideContextInfo implements IAmbientCarbonMonoxideContextInfo, IContextInfo
 {
 
 	double[] covalues= new double[1];;
 	
-	public static Parcelable.Creator<CarbonMonoxideContextInfo> CREATOR = new Parcelable.Creator<CarbonMonoxideContextInfo>() 
+	public static Parcelable.Creator<AmbientCarbonMonoxideContextInfo> CREATOR = new Parcelable.Creator<AmbientCarbonMonoxideContextInfo>() 
 		{
-		public CarbonMonoxideContextInfo createFromParcel(Parcel in) 
+		public AmbientCarbonMonoxideContextInfo createFromParcel(Parcel in) 
 		{
-			return new CarbonMonoxideContextInfo(in);
+			return new AmbientCarbonMonoxideContextInfo(in);
 		}
 
-		public CarbonMonoxideContextInfo[] newArray(int size) 
+		public AmbientCarbonMonoxideContextInfo[] newArray(int size) 
 		{
-			return new CarbonMonoxideContextInfo[size];
+			return new AmbientCarbonMonoxideContextInfo[size];
 		}
 	};
 	
@@ -40,7 +40,7 @@ public class CarbonMonoxideContextInfo implements ICarbonMonoxideContextInfo, IC
 		return this.getClass().getSimpleName();
 	};
 	
-	public CarbonMonoxideContextInfo(Parcel in) 
+	public AmbientCarbonMonoxideContextInfo(Parcel in) 
 	{
 		covalues = in.createDoubleArray();
 	}
@@ -92,7 +92,7 @@ public class CarbonMonoxideContextInfo implements ICarbonMonoxideContextInfo, IC
 		return formats;
 	};
 	
-	public CarbonMonoxideContextInfo()
+	public AmbientCarbonMonoxideContextInfo()
 	{
 		Log.i("Sensordrone", "generate CO context");
 		HashMap<String, Drone> drones = Backend.getDroneList();
