@@ -98,6 +98,7 @@ public class AmbientTemperatureContextInfo implements IAmbientTemperatureContext
 			Iterator<Entry<String, Drone>> it = droneset.iterator();
 			Log.i("Sensordrone", "now for the counter");
 			int counter=0;
+			tempvalues = new double[drones.size()];
 			while(it.hasNext())
 			{
 				Drone d = it.next().getValue();

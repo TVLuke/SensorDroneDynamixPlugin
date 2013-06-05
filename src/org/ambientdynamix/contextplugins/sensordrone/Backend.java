@@ -123,8 +123,8 @@ public class Backend
 							
 						}
 
-						//mBluetoothAdapter.cancelDiscovery();
-						//ctx.unregisterReceiver(mBluetoothReceiver);
+						mBluetoothAdapter.cancelDiscovery();
+						ctx.unregisterReceiver(mBluetoothReceiver);
 					}
 				}
 			}
@@ -554,6 +554,7 @@ public class Backend
 	{
 		private Handler handler = new Handler();
 		private int delay=1000;
+		long counter=0;
 		
 		@Override
 		public void run() 
@@ -564,6 +565,16 @@ public class Backend
 				{
 					handler.removeCallbacks(this);
 					return;
+				}
+				if(counter%100==0)
+				{
+				    ctx.registerReceiver(mBluetoothReceiver, btFilter);
+				    mBluetoothAdapter.startDiscovery();
+				}
+				if(counter%150==0)
+				{
+					mBluetoothAdapter.cancelDiscovery();
+					ctx.unregisterReceiver(mBluetoothReceiver);
 				}
 				Set<Entry<String, Drone>> droneset = drones.entrySet();
 				Iterator<Entry<String, Drone>> it = droneset.iterator();
