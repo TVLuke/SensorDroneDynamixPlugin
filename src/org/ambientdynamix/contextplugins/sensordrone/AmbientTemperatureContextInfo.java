@@ -1,12 +1,15 @@
 package org.ambientdynamix.contextplugins.sensordrone;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
 
 import org.ambientdynamix.contextplugins.context.info.environment.ITemperatureContextInfo;
+import org.ambientdynamix.contextplugins.info.meta.IContextSource;
 import org.ambientdynamix.contextplugins.info.meta.IDevice;
 import org.ambientdynamix.contextplugins.info.meta.ISourcedContext;
 
@@ -20,7 +23,7 @@ import com.sensorcon.sensordrone.Drone;
 public class AmbientTemperatureContextInfo implements ITemperatureContextInfo, ISourcedContext
 {
 	double[] tempvalues= new double[1];
-	IDevice[] sources = new IDevice[1];
+	List<IContextSource> sources = new ArrayList<IContextSource>();
 	
 	public static Parcelable.Creator<AmbientTemperatureContextInfo> CREATOR = new Parcelable.Creator<AmbientTemperatureContextInfo>() 
 		{
@@ -101,7 +104,7 @@ public class AmbientTemperatureContextInfo implements ITemperatureContextInfo, I
 			Log.i("Sensordrone", "now for the counter");
 			int counter=0;
 			tempvalues = new double[drones.size()];
-			sources = new IDevice[drones.size()];
+			sources = new ArrayList<IContextSource>();
 			while(it.hasNext())
 			{
 				Drone d = it.next().getValue();
@@ -110,13 +113,13 @@ public class AmbientTemperatureContextInfo implements ITemperatureContextInfo, I
 				{
 					Log.i("Sensordrone", d.temperature_Celcius+" °C");
 					tempvalues[counter]=d.temperature_Celcius;
-					//sources[counter]=
+					sources.add(dev);
 				}
 				else
 				{
 					tempvalues=new double[1];
 					tempvalues[counter]=-999.0;	
-					//sources[counter]="Sensordrone "+d.lastMAC;
+					sources.add(dev);
 				}
 				counter++;
 			}
@@ -126,7 +129,7 @@ public class AmbientTemperatureContextInfo implements ITemperatureContextInfo, I
 	private AmbientTemperatureContextInfo(final Parcel in) 
 	{
 		tempvalues = in.createDoubleArray();
-		sources = (IDevice[]) in.readParcelableArray(getClass().getClassLoader()); //TODO: not sure why there is a need to cast?
+		in.readList(sources, getClass().getClassLoader()); //TODO: not sure why there is a need to cast?
 	}
 
 	public IBinder asBinder() 
@@ -142,7 +145,7 @@ public class AmbientTemperatureContextInfo implements ITemperatureContextInfo, I
 	public void writeToParcel(Parcel out, int flags) 
 	{
 		out.writeDoubleArray(tempvalues);
-		out.writeParcelableArray(sources, flags);
+		out.writeList(sources);
 	}
 
 	@Override
@@ -152,7 +155,7 @@ public class AmbientTemperatureContextInfo implements ITemperatureContextInfo, I
 	}
 
 	@Override
-	public IDevice[] getSources() 
+	public List<IContextSource> getSources() 
 	{
 		return sources;
 	}
