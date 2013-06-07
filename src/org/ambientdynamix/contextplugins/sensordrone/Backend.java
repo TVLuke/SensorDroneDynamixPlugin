@@ -680,6 +680,7 @@ public class Backend
 	
 	public static void identifiy(String id)
 	{
+		Log.i(TAG, "identify");
 		blinking(150, 1250, 255, 0, 0, id);
 		
 	}
@@ -692,7 +693,7 @@ public class Backend
 		while(it.hasNext())
 		{
 			Drone d = it.next().getValue();
-			if(d.lastMAC.equals("drone"))
+			if(d.lastMAC.equals(drone))
 			{
 				ConnectionBlinker cb = blinkerarray.get(d.lastMAC);
 				cb.disable();
