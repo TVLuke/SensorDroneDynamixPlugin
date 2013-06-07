@@ -695,8 +695,8 @@ public class Backend
 			Drone d = it.next().getValue();
 			if(d.lastMAC.equals(drone))
 			{
+				Log.i(TAG, "found "+drone);
 				ConnectionBlinker cb = blinkerarray.get(d.lastMAC);
-				cb.disable();
 				cb.setColors(r, g, b);
 				cb.setRate(delay);
 				cb.run();
@@ -713,6 +713,7 @@ public class Backend
 				cb.setColors(0, 0, 255);
 				cb.setRate(10000);
 				cb.enable();
+				cb.run();
 			}
 		}
 	}
