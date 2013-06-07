@@ -93,17 +93,30 @@ public class AmbientHumidityContextInfo  implements IAmbientHumidityContextInfo,
 	
 	public AmbientHumidityContextInfo()
 	{
-		Log.i("Sensordrone", "generate light context");
+		Log.i("Sensordrone", "generate temp context 3");
 		HashMap<String, Drone> drones = Backend.getDroneList();
 		if(drones!=null)
 		{
-			humidityvalues = new double[drones.size()];
+			Log.i("Sensordrone", "not null");
 			Set<Entry<String, Drone>> droneset = drones.entrySet();
+			Log.i("Sensordrone", "...");
 			Iterator<Entry<String, Drone>> it = droneset.iterator();
+			Log.i("Sensordrone", "now for the counter");
 			int counter=0;
+			humidityvalues = new double[drones.size()];
 			while(it.hasNext())
 			{
-				humidityvalues[counter]=it.next().getValue().humidity_Percent;
+				Drone d = it.next().getValue();
+				if(d.isConnected)
+				{
+					Log.i("Sensordrone", d.temperature_Celcius+" °C");
+					humidityvalues[counter]=d.humidity_Percent;
+				}
+				else
+				{
+					humidityvalues=new double[1];
+					humidityvalues[counter]=-999.0;		
+				}
 				counter++;
 			}
 		}

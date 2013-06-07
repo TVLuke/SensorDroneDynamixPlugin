@@ -36,6 +36,7 @@ public class Backend
 	Context ctx;
 	private static boolean running=false;
 	int[] sensortypes;
+	private static int FREQ = 60000;
 	
 	public Backend(Context context)
 	{
@@ -452,7 +453,7 @@ public class Backend
 			{
 				ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
 				SDStreamer s = sarray.get(1);
-				s.streamHandler.postDelayed(s, 10000);	
+				s.streamHandler.postDelayed(s, FREQ);	
 				Log.i(TAG, "sensordrone Humidity % "+drone.humidity_Percent);
 			
 			}
@@ -491,7 +492,7 @@ public class Backend
 			{
 				ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
 				SDStreamer s = sarray.get(2);
-				s.streamHandler.postDelayed(s, 10000);	
+				s.streamHandler.postDelayed(s, FREQ);	
 				Log.i(TAG, "sensordrone pressure level in Pa "+drone.pressure_Pascals);
 				
 			}
@@ -509,7 +510,7 @@ public class Backend
 				// TODO Auto-generated method stub
 				ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
 				SDStreamer s = sarray.get(4);
-				s.streamHandler.postDelayed(s, 10000);
+				s.streamHandler.postDelayed(s, FREQ);
 				Log.i(TAG, "sensordrone lux "+drone.rgbcLux);
 			}
 
@@ -520,7 +521,7 @@ public class Backend
 				Log.i(TAG, "sensordrone Temperature "+drone.lastMAC+" "+drone.temperature_Celcius);
 				ArrayList<SDStreamer> sarray =streamers.get(""+drone.lastMAC);
 				SDStreamer s = sarray.get(0);
-				s.streamHandler.postDelayed(s, 10000);				
+				s.streamHandler.postDelayed(s, FREQ);				
 			}
 
 			@Override
@@ -676,5 +677,30 @@ public class Backend
 		return running;
 	}
 	
+	public static void identifiy(String id)
+	{
+		HashMap<String, Drone> drones = Backend.getDroneList();
+		Set<Entry<String, Drone>> droneset = drones.entrySet();
+		Iterator<Entry<String, Drone>> it = droneset.iterator();
+		while(it.hasNext())
+		{
+			Drone d = it.next().getValue();
+			ConnectionBlinker cb = blinkerarray.get(d.lastMAC);
+			cb.setColors(255, 0, 0);
+			cb.setRate(200);
+			cb.run();
+			try 
+			{
+				Thread.sleep(1000);
+			} 
+			catch (InterruptedException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			cb.setRate(1000);
+			cb.setColors(0, 0, 255);
+		}
+	}
 
 }

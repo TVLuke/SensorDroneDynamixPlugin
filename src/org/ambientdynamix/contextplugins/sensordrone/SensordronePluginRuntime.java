@@ -1,10 +1,17 @@
 package org.ambientdynamix.contextplugins.sensordrone;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.UUID;
+import java.util.Map.Entry;
 
 import org.ambientdynamix.api.contextplugin.*;
 import org.ambientdynamix.api.contextplugin.security.PrivacyRiskLevel;
 import org.ambientdynamix.api.contextplugin.security.SecuredContextInfo;
+
+import com.sensorcon.sdhelper.ConnectionBlinker;
+import com.sensorcon.sensordrone.Drone;
 
 import android.content.Context;
 import android.content.Intent;
@@ -80,7 +87,13 @@ public class SensordronePluginRuntime extends ReactiveContextPluginRuntime
 		Log.i(TAG, "config noooooo");
 		Log.w(TAG, "Configuration not supported!");
 		handleContextRequest(requestId, contextInfoType);
+		if(scanConfig.containsKey("deviceId"))
+		{
+			String droneId = scanConfig.getString("deviceId");
+			Backend.identifiy(droneId);
+		}
 	}
+
 
 	@Override
 	public void init(PowerScheme arg0, ContextPluginSettings arg1)  throws Exception

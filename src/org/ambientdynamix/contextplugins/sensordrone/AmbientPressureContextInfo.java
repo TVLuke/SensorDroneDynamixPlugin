@@ -46,17 +46,30 @@ double[] pressurevalues= new double[1];;
 
 	public AmbientPressureContextInfo()
 	{
-		Log.i("Sensordrone", "generate pressure context");
+		Log.i("Sensordrone", "generate temp context 3");
 		HashMap<String, Drone> drones = Backend.getDroneList();
 		if(drones!=null)
 		{
-			pressurevalues = new double[drones.size()];
+			Log.i("Sensordrone", "not null");
 			Set<Entry<String, Drone>> droneset = drones.entrySet();
+			Log.i("Sensordrone", "...");
 			Iterator<Entry<String, Drone>> it = droneset.iterator();
+			Log.i("Sensordrone", "now for the counter");
 			int counter=0;
+			pressurevalues = new double[drones.size()];
 			while(it.hasNext())
 			{
-				pressurevalues[counter]=it.next().getValue().pressure_Pascals;
+				Drone d = it.next().getValue();
+				if(d.isConnected)
+				{
+					Log.i("Sensordrone", d.temperature_Celcius+" °C");
+					pressurevalues[counter]=d.pressure_Pascals;
+				}
+				else
+				{
+					pressurevalues=new double[1];
+					pressurevalues[counter]=-999.0;		
+				}
 				counter++;
 			}
 		}

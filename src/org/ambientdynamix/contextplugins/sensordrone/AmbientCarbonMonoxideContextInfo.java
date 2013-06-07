@@ -94,17 +94,30 @@ public class AmbientCarbonMonoxideContextInfo implements IAmbientCarbonMonoxideC
 	
 	public AmbientCarbonMonoxideContextInfo()
 	{
-		Log.i("Sensordrone", "generate CO context");
+		Log.i("Sensordrone", "generate temp context 3");
 		HashMap<String, Drone> drones = Backend.getDroneList();
 		if(drones!=null)
 		{
-			covalues = new double[drones.size()];
+			Log.i("Sensordrone", "not null");
 			Set<Entry<String, Drone>> droneset = drones.entrySet();
+			Log.i("Sensordrone", "...");
 			Iterator<Entry<String, Drone>> it = droneset.iterator();
+			Log.i("Sensordrone", "now for the counter");
 			int counter=0;
+			covalues = new double[drones.size()];
 			while(it.hasNext())
 			{
-				covalues[counter]=it.next().getValue().precisionGas_ppmCarbonMonoxide;
+				Drone d = it.next().getValue();
+				if(d.isConnected)
+				{
+					Log.i("Sensordrone", d.temperature_Celcius+" °C");
+					covalues[counter]=d.precisionGas_ppmCarbonMonoxide;
+				}
+				else
+				{
+					covalues=new double[1];
+					covalues[counter]=-999.0;		
+				}
 				counter++;
 			}
 		}

@@ -33,7 +33,10 @@ import android.util.Log;
 
 class AmbientLightContextInfo implements IAmbientLightContextInfo, IContextInfo
 {
-	double[] lightvalues= new double[1];;
+	double[] lightvalues= new double[1];
+	double[] redvalues = new double[1];
+	double[] greenvalues = new double[1];
+	double[] bluevalues = new double[1];
 	
 	public static Parcelable.Creator<AmbientLightContextInfo> CREATOR = new Parcelable.Creator<AmbientLightContextInfo>() 
 		{
@@ -103,17 +106,39 @@ class AmbientLightContextInfo implements IAmbientLightContextInfo, IContextInfo
 
 	public AmbientLightContextInfo()
 	{
-		Log.i("Sensordrone", "generate light context");
+		Log.i("Sensordrone", "generate temp context 3");
 		HashMap<String, Drone> drones = Backend.getDroneList();
 		if(drones!=null)
 		{
-			lightvalues = new double[drones.size()];
+			Log.i("Sensordrone", "not null");
 			Set<Entry<String, Drone>> droneset = drones.entrySet();
+			Log.i("Sensordrone", "...");
 			Iterator<Entry<String, Drone>> it = droneset.iterator();
+			Log.i("Sensordrone", "now for the counter");
 			int counter=0;
+			lightvalues = new double[drones.size()];
+			redvalues = new double[drones.size()];
+			greenvalues = new double[drones.size()];
+			bluevalues = new double[drones.size()];
 			while(it.hasNext())
 			{
-				lightvalues[counter]=it.next().getValue().rgbcLux;
+				Drone d = it.next().getValue();
+				if(d.isConnected)
+				{
+					Log.i("Sensordrone", d.temperature_Celcius+" °C");
+					lightvalues[counter]=d.rgbcLux;
+					redvalues[counter]=d.rgbcRedChannel;
+					greenvalues[counter]=d.rgbcGreenChannel;
+					bluevalues[counter]=d.rgbcBlueChannel;
+				}
+				else
+				{
+					lightvalues=new double[1];
+					lightvalues[counter]=-999.0;	
+					redvalues[counter]=-999.0;
+					greenvalues[counter]=-999.0;
+					bluevalues[counter]=-999.0;
+				}
 				counter++;
 			}
 		}
@@ -143,6 +168,24 @@ class AmbientLightContextInfo implements IAmbientLightContextInfo, IContextInfo
 	public double[] getLuxValue() 
 	{
 		return lightvalues;
+	}
+
+	@Override
+	public double[] getRedLevelValue() 
+	{
+		return redvalues;
+	}
+
+	@Override
+	public double[] getGreenLevelValue() 
+	{
+		return greenvalues;
+	}
+
+	@Override
+	public double[] getBlueLevelValue() 
+	{
+		return bluevalues;
 	}
 	
 }

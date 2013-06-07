@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import org.ambientdynamix.api.application.IContextInfo;
 import org.ambientdynamix.contextplugins.contextinterfaces.IAmbientTemperatureContextInfo;
+import org.ambientdynamix.contextplugins.contextinterfaces.SourcedContext;
 
 import android.os.IBinder;
 import android.os.Parcel;
@@ -16,9 +17,10 @@ import android.util.Log;
 
 import com.sensorcon.sensordrone.Drone;
 
-public class AmbientTemperatureContextInfo implements IAmbientTemperatureContextInfo, IContextInfo
+public class AmbientTemperatureContextInfo implements IAmbientTemperatureContextInfo, IContextInfo, SourcedContext
 {
 	double[] tempvalues= new double[1];
+	String[] sources = new String[1];
 	
 	public static Parcelable.Creator<AmbientTemperatureContextInfo> CREATOR = new Parcelable.Creator<AmbientTemperatureContextInfo>() 
 		{
@@ -99,6 +101,7 @@ public class AmbientTemperatureContextInfo implements IAmbientTemperatureContext
 			Log.i("Sensordrone", "now for the counter");
 			int counter=0;
 			tempvalues = new double[drones.size()];
+			sources = new String[drones.size()];
 			while(it.hasNext())
 			{
 				Drone d = it.next().getValue();
@@ -106,11 +109,13 @@ public class AmbientTemperatureContextInfo implements IAmbientTemperatureContext
 				{
 					Log.i("Sensordrone", d.temperature_Celcius+" °C");
 					tempvalues[counter]=d.temperature_Celcius;
+					sources[counter]="Sensordrone "+d.lastMAC;
 				}
 				else
 				{
 					tempvalues=new double[1];
-					tempvalues[counter]=-999.0;		
+					tempvalues[counter]=-999.0;	
+					sources[counter]="Sensordrone "+d.lastMAC;
 				}
 				counter++;
 			}
@@ -141,6 +146,12 @@ public class AmbientTemperatureContextInfo implements IAmbientTemperatureContext
 	public double[] getCelciusValue() 
 	{
 		return tempvalues;
+	}
+
+	@Override
+	public String[] getSources() 
+	{
+		return sources;
 	}
 	
 }
