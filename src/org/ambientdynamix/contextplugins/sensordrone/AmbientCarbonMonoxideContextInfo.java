@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.ambientdynamix.api.application.IContextInfo;
-import org.ambientdynamix.contextplugins.contextinterfaces.IAmbientCarbonMonoxideContextInfo;
+import org.ambientdynamix.contextplugins.context.info.environment.ICarbonMonoxideContextInfo;
 
 import com.sensorcon.sensordrone.Drone;
 
@@ -16,7 +16,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-public class AmbientCarbonMonoxideContextInfo implements IAmbientCarbonMonoxideContextInfo
+public class AmbientCarbonMonoxideContextInfo implements ICarbonMonoxideContextInfo
 {
 
 	double[] covalues= new double[1];;
@@ -51,7 +51,7 @@ public class AmbientCarbonMonoxideContextInfo implements IAmbientCarbonMonoxideC
 	@Override
 	public String getContextType() 
 	{
-		return "org.ambientdynamix.contextplugins.carbonmonoxide";
+		return "org.ambientdynamix.contextplugins.context.info.environment.carbonmonoxide";
 	}
 
 

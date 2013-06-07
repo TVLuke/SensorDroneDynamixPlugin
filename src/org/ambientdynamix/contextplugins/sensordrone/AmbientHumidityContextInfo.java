@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.ambientdynamix.api.application.IContextInfo;
-import org.ambientdynamix.contextplugins.contextinterfaces.IAmbientHumidityContextInfo;
+import org.ambientdynamix.contextplugins.context.info.environment.IHumidityContextInfo;
 
 import com.sensorcon.sensordrone.Drone;
 
@@ -16,7 +16,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-public class AmbientHumidityContextInfo  implements IAmbientHumidityContextInfo
+public class AmbientHumidityContextInfo  implements IHumidityContextInfo
 {
 
 	double[] humidityvalues= new double[1];;
@@ -51,7 +51,7 @@ public class AmbientHumidityContextInfo  implements IAmbientHumidityContextInfo
 	@Override
 	public String getContextType() 
 	{
-		return "org.ambientdynamix.contextplugins.ambienthumidity";
+		return "org.ambientdynamix.contextplugins.context.info.environment.humidity";
 	}
 
 	/* (non-Javadoc)

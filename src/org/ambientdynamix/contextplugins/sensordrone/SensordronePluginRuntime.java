@@ -64,33 +64,56 @@ public class SensordronePluginRuntime extends ReactiveContextPluginRuntime
 	public void handleContextRequest(UUID requestId, String contextInfoType) 
 	{
 		Log.i(TAG, "sensordrone context requested "+contextInfoType);
-		if(contextInfoType.equals("org.ambientdynamix.contextplugins.ambientlight"))
+		if(contextInfoType.equals("org.ambientdynamix.contextplugins.context.info.environment.light"))
 		{
 			SecuredContextInfo aci= new SecuredContextInfo(new AmbientLightContextInfo(), PrivacyRiskLevel.MEDIUM);
 			sendContextEvent(requestId, aci, 10000);
 		}
-		if(contextInfoType.equals("org.ambientdynamix.contextplugins.ambienttemperature"))
+		if(contextInfoType.equals("org.ambientdynamix.contextplugins.context.info.environment.temperature"))
 		{
 			SecuredContextInfo aci= new SecuredContextInfo(new AmbientTemperatureContextInfo(), PrivacyRiskLevel.MEDIUM);
 			sendContextEvent(requestId, aci, 120000);
 		}
-		if(contextInfoType.equals("org.ambientdynamix.contextplugins.carbonmonoxide"))
+		if(contextInfoType.equals("org.ambientdynamix.contextplugins.context.info.environment.carbonmonoxide"))
 		{
 			SecuredContextInfo aci= new SecuredContextInfo(new AmbientCarbonMonoxideContextInfo(), PrivacyRiskLevel.MEDIUM);
 			sendContextEvent(requestId, aci, 10000);
+		}
+		if(contextInfoType.equals("org.ambientdynamix.contextplugins.context.action.device.identification"))
+		{
+			IdentificationContextAction aci = new IdentificationContextAction();
+			aci.identify("");
 		}
 	}
 
 	@Override
 	public void handleConfiguredContextRequest(UUID requestId, String contextInfoType, Bundle scanConfig) 
 	{
-		Log.i(TAG, "config noooooo");
-		Log.w(TAG, "Configuration not supported!");
-		handleContextRequest(requestId, contextInfoType);
-		if(scanConfig.containsKey("idRequest") && scanConfig.getBoolean("idRequest"))
+		Log.i(TAG, "sensordrone configured context requested "+contextInfoType);
+		if(contextInfoType.equals("org.ambientdynamix.contextplugins.context.info.environment.light"))
 		{
-			String droneId = scanConfig.getString("deviceId");
-			Backend.identifiy(droneId);
+			handleContextRequest(requestId, contextInfoType);
+		}
+		if(contextInfoType.equals("org.ambientdynamix.contextplugins.context.info.environment.temperature"))
+		{
+			handleContextRequest(requestId, contextInfoType);
+		}
+		if(contextInfoType.equals("org.ambientdynamix.contextplugins.context.info.environment.carbonmonoxide"))
+		{
+			handleContextRequest(requestId, contextInfoType);
+		}
+		if(contextInfoType.equals("org.ambientdynamix.contextplugins.context.action.device.identification"))
+		{
+			IdentificationContextAction aci = new IdentificationContextAction();	
+			if(scanConfig.containsKey("deviceId"))
+			{
+				aci.identify(scanConfig.getString("deviceId"));			
+			}
+			else
+			{
+				handleContextRequest(requestId, contextInfoType);
+			}
+
 		}
 	}
 

@@ -693,7 +693,7 @@ public class Backend
 		while(it.hasNext())
 		{
 			Drone d = it.next().getValue();
-			if(d.lastMAC.equals(drone))
+			if(d.lastMAC.equals(drone)|| drone.equals(""))
 			{
 				Log.i(TAG, "found "+drone);
 				ConnectionBlinker cb = blinkerarray.get(d.lastMAC);

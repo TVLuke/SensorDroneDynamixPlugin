@@ -1,4 +1,4 @@
-package org.ambientdynamix.contextplugins.contextinterfaces;
+package org.ambientdynamix.contextplugins.context.info.device;
 
 public interface IDevice extends IContextSource
 {

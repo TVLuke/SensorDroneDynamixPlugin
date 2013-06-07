@@ -22,7 +22,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.ambientdynamix.api.application.IContextInfo;
-import org.ambientdynamix.contextplugins.contextinterfaces.IAmbientLightContextInfo;
+import org.ambientdynamix.contextplugins.context.info.environment.ILightContextInfo;
 
 import com.sensorcon.sensordrone.Drone;
 
@@ -31,7 +31,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-class AmbientLightContextInfo implements IAmbientLightContextInfo
+class AmbientLightContextInfo implements ILightContextInfo
 {
 	double[] lightvalues= new double[1];
 	double[] redvalues = new double[1];
@@ -64,7 +64,7 @@ class AmbientLightContextInfo implements IAmbientLightContextInfo
 	@Override
 	public String getContextType() 
 	{
-		return "org.ambientdynamix.contextplugins.ambientlight";
+		return "org.ambientdynamix.contextplugins.context.info.environment.light";
 	}
 
 	/* (non-Javadoc)

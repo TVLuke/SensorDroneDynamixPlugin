@@ -1,6 +1,6 @@
-package org.ambientdynamix.contextplugins.contextinterfaces;
+package org.ambientdynamix.contextplugins.info.meta;
 
-public interface SourcedContext {
+public interface ISourcedContext {
 
 	//this offcourse is no good, there should be a class called source that has subclasses and all that.
 	public String[] getSources();

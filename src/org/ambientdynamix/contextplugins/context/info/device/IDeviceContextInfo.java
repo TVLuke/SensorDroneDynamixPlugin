@@ -1,4 +1,4 @@
-package org.ambientdynamix.contextplugins.contextinterfaces;
+package org.ambientdynamix.contextplugins.context.info.device;
 
 /**
  * DeviceContextInfo is supposed to provide basic information on connected devices. It returns an Array of objects implementing the IDevice Interface or something...

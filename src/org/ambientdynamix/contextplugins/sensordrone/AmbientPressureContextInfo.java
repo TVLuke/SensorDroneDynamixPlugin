@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.ambientdynamix.api.application.IContextInfo;
-import org.ambientdynamix.contextplugins.contextinterfaces.IAmbientPressureContextInfo;
+import org.ambientdynamix.contextplugins.context.info.environment.IPressureContextInfo;
 
 import com.sensorcon.sensordrone.Drone;
 
@@ -16,7 +16,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-public class AmbientPressureContextInfo implements IAmbientPressureContextInfo
+public class AmbientPressureContextInfo implements IPressureContextInfo
 {
 
 double[] pressurevalues= new double[1];;
@@ -100,7 +100,7 @@ double[] pressurevalues= new double[1];;
 	@Override
 	public String getContextType() 
 	{
-		return "org.ambientdynamix.contextplugins.ambientpressure";
+		return "org.ambientdynamix.contextplugins.context.info.environment.pressure";
 	}
 
 	/* (non-Javadoc)

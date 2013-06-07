@@ -6,9 +6,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import org.ambientdynamix.api.application.IContextInfo;
-import org.ambientdynamix.contextplugins.contextinterfaces.IAmbientTemperatureContextInfo;
-import org.ambientdynamix.contextplugins.contextinterfaces.SourcedContext;
+import org.ambientdynamix.contextplugins.context.info.environment.ITemperatureContextInfo;
+import org.ambientdynamix.contextplugins.info.meta.ISourcedContext;
 
 import android.os.IBinder;
 import android.os.Parcel;
@@ -17,7 +16,7 @@ import android.util.Log;
 
 import com.sensorcon.sensordrone.Drone;
 
-public class AmbientTemperatureContextInfo implements IAmbientTemperatureContextInfo, SourcedContext
+public class AmbientTemperatureContextInfo implements ITemperatureContextInfo, ISourcedContext
 {
 	double[] tempvalues= new double[1];
 	String[] sources = new String[1];
@@ -40,7 +39,7 @@ public class AmbientTemperatureContextInfo implements IAmbientTemperatureContext
 	public String toString() 
 	{
 		return this.getClass().getSimpleName();
-	};
+	}
 
 	/* (non-Javadoc)
 	 * @see org.ambientdynamix.contextplugins.ambientsound.IAmbientSoundContextInfo#getContextType()
@@ -48,7 +47,7 @@ public class AmbientTemperatureContextInfo implements IAmbientTemperatureContext
 	@Override
 	public String getContextType() 
 	{
-		return "org.ambientdynamix.contextplugins.ambienttemperature";
+		return "org.ambientdynamix.contextplugins.context.info.environment.temperature";
 	}
 
 	/* (non-Javadoc)
