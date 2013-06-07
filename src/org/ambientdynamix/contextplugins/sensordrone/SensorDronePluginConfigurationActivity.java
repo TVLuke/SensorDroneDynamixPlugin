@@ -68,7 +68,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
             {
             	Log.i("Sensordrone", "pressed the button 6c");
             	updateListView();
-            	Backend.identifiy("");
+            	Backend.identifiy("B8:FF:FE:B9:F1:67");
             }
         });
 		

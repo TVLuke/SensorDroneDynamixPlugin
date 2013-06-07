@@ -680,29 +680,39 @@ public class Backend
 	
 	public static void identifiy(String id)
 	{
+		blinking(150, 1250, 255, 0, 0, id);
+		
+	}
+	
+	public static void blinking(int delay, int duration, int r, int g, int b, String drone)
+	{
 		HashMap<String, Drone> drones = Backend.getDroneList();
 		Set<Entry<String, Drone>> droneset = drones.entrySet();
 		Iterator<Entry<String, Drone>> it = droneset.iterator();
 		while(it.hasNext())
 		{
 			Drone d = it.next().getValue();
-			ConnectionBlinker cb = blinkerarray.get(d.lastMAC);
-			cb.disable();
-			cb.setColors(255, 0, 0);
-			cb.setRate(200);
-			cb.run();
-			try 
+			if(d.lastMAC.equals("drone"))
 			{
-				Thread.sleep(1250);
-			} 
-			catch (InterruptedException e) 
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				ConnectionBlinker cb = blinkerarray.get(d.lastMAC);
+				cb.disable();
+				cb.setColors(r, g, b);
+				cb.setRate(delay);
+				cb.run();
+				try 
+				{
+					Thread.sleep(duration);
+				} 
+				catch (InterruptedException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				cb.disable();
+				cb.setColors(0, 0, 255);
+				cb.setRate(10000);
+				cb.enable();
 			}
-			cb.disable();
-			cb.setColors(0, 0, 255);
-			cb.setRate(10000);
 		}
 	}
 
