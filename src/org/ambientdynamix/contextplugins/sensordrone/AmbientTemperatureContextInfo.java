@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.ambientdynamix.contextplugins.context.info.environment.ITemperatureContextInfo;
+import org.ambientdynamix.contextplugins.info.meta.IDevice;
 import org.ambientdynamix.contextplugins.info.meta.ISourcedContext;
 
 import android.os.IBinder;
@@ -19,7 +20,7 @@ import com.sensorcon.sensordrone.Drone;
 public class AmbientTemperatureContextInfo implements ITemperatureContextInfo, ISourcedContext
 {
 	double[] tempvalues= new double[1];
-	String[] sources = new String[1];
+	IDevice[] sources = new IDevice[1];
 	
 	public static Parcelable.Creator<AmbientTemperatureContextInfo> CREATOR = new Parcelable.Creator<AmbientTemperatureContextInfo>() 
 		{
@@ -100,21 +101,22 @@ public class AmbientTemperatureContextInfo implements ITemperatureContextInfo, I
 			Log.i("Sensordrone", "now for the counter");
 			int counter=0;
 			tempvalues = new double[drones.size()];
-			sources = new String[drones.size()];
+			sources = new IDevice[drones.size()];
 			while(it.hasNext())
 			{
 				Drone d = it.next().getValue();
+				Sensordrone dev = new Sensordrone(d);
 				if(d.isConnected)
 				{
 					Log.i("Sensordrone", d.temperature_Celcius+" °C");
 					tempvalues[counter]=d.temperature_Celcius;
-					sources[counter]="Sensordrone "+d.lastMAC;
+					//sources[counter]=
 				}
 				else
 				{
 					tempvalues=new double[1];
 					tempvalues[counter]=-999.0;	
-					sources[counter]="Sensordrone "+d.lastMAC;
+					//sources[counter]="Sensordrone "+d.lastMAC;
 				}
 				counter++;
 			}
@@ -124,6 +126,7 @@ public class AmbientTemperatureContextInfo implements ITemperatureContextInfo, I
 	private AmbientTemperatureContextInfo(final Parcel in) 
 	{
 		tempvalues = in.createDoubleArray();
+		sources = (IDevice[]) in.readParcelableArray(getClass().getClassLoader()); //TODO: not sure why there is a need to cast?
 	}
 
 	public IBinder asBinder() 
@@ -139,6 +142,7 @@ public class AmbientTemperatureContextInfo implements ITemperatureContextInfo, I
 	public void writeToParcel(Parcel out, int flags) 
 	{
 		out.writeDoubleArray(tempvalues);
+		out.writeParcelableArray(sources, flags);
 	}
 
 	@Override
@@ -148,7 +152,7 @@ public class AmbientTemperatureContextInfo implements ITemperatureContextInfo, I
 	}
 
 	@Override
-	public String[] getSources() 
+	public IDevice[] getSources() 
 	{
 		return sources;
 	}
