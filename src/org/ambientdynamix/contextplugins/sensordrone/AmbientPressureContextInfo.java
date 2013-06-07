@@ -16,7 +16,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-public class AmbientPressureContextInfo implements IAmbientPressureContextInfo, IContextInfo{
+public class AmbientPressureContextInfo implements IAmbientPressureContextInfo
+{
 
 double[] pressurevalues= new double[1];;
 	

@@ -72,7 +72,7 @@ public class SensordronePluginRuntime extends ReactiveContextPluginRuntime
 		if(contextInfoType.equals("org.ambientdynamix.contextplugins.ambienttemperature"))
 		{
 			SecuredContextInfo aci= new SecuredContextInfo(new AmbientTemperatureContextInfo(), PrivacyRiskLevel.MEDIUM);
-			sendContextEvent(requestId, aci, 10000);
+			sendContextEvent(requestId, aci, 120000);
 		}
 		if(contextInfoType.equals("org.ambientdynamix.contextplugins.carbonmonoxide"))
 		{
@@ -87,7 +87,7 @@ public class SensordronePluginRuntime extends ReactiveContextPluginRuntime
 		Log.i(TAG, "config noooooo");
 		Log.w(TAG, "Configuration not supported!");
 		handleContextRequest(requestId, contextInfoType);
-		if(scanConfig.containsKey("deviceId"))
+		if(scanConfig.containsKey("idRequest") && scanConfig.getBoolean("idRequest"))
 		{
 			String droneId = scanConfig.getString("deviceId");
 			Backend.identifiy(droneId);

@@ -1,6 +1,8 @@
 package org.ambientdynamix.contextplugins.contextinterfaces;
 
-public interface IAmbientPressureContextInfo 
+import org.ambientdynamix.api.application.IContextInfo;
+
+public interface IAmbientPressureContextInfo extends IContextInfo
 {
 	public abstract double[] getPaValue();
 }

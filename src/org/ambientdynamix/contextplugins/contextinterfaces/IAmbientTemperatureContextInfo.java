@@ -1,6 +1,8 @@
 package org.ambientdynamix.contextplugins.contextinterfaces;
 
-public interface IAmbientTemperatureContextInfo 
+import org.ambientdynamix.api.application.IContextInfo;
+
+public interface IAmbientTemperatureContextInfo extends IContextInfo
 {
 	public abstract double[] getCelciusValue();
 }

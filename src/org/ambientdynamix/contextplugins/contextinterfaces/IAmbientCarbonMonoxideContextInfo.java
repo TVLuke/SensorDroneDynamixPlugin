@@ -1,6 +1,8 @@
 package org.ambientdynamix.contextplugins.contextinterfaces;
 
-public interface IAmbientCarbonMonoxideContextInfo
+import org.ambientdynamix.api.application.IContextInfo;
+
+public interface IAmbientCarbonMonoxideContextInfo extends IContextInfo
 {
 	public abstract double[] getCOValue();
 }

@@ -16,7 +16,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-public class AmbientHumidityContextInfo  implements IAmbientHumidityContextInfo, IContextInfo
+public class AmbientHumidityContextInfo  implements IAmbientHumidityContextInfo
 {
 
 	double[] humidityvalues= new double[1];;

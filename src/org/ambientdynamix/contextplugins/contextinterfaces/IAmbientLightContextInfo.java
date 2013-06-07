@@ -2,7 +2,9 @@ package org.ambientdynamix.contextplugins.contextinterfaces;
 
 import java.util.Set;
 
-public interface IAmbientLightContextInfo
+import org.ambientdynamix.api.application.IContextInfo;
+
+public interface IAmbientLightContextInfo extends IContextInfo
 {
 	public abstract double[] getLuxValue();
 	

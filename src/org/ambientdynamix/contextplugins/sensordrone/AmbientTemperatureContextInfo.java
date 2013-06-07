@@ -17,7 +17,7 @@ import android.util.Log;
 
 import com.sensorcon.sensordrone.Drone;
 
-public class AmbientTemperatureContextInfo implements IAmbientTemperatureContextInfo, IContextInfo, SourcedContext
+public class AmbientTemperatureContextInfo implements IAmbientTemperatureContextInfo, SourcedContext
 {
 	double[] tempvalues= new double[1];
 	String[] sources = new String[1];

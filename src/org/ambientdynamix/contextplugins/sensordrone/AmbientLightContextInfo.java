@@ -31,7 +31,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-class AmbientLightContextInfo implements IAmbientLightContextInfo, IContextInfo
+class AmbientLightContextInfo implements IAmbientLightContextInfo
 {
 	double[] lightvalues= new double[1];
 	double[] redvalues = new double[1];
