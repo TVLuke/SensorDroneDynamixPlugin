@@ -687,20 +687,22 @@ public class Backend
 		{
 			Drone d = it.next().getValue();
 			ConnectionBlinker cb = blinkerarray.get(d.lastMAC);
+			cb.disable();
 			cb.setColors(255, 0, 0);
 			cb.setRate(200);
 			cb.run();
 			try 
 			{
-				Thread.sleep(1000);
+				Thread.sleep(1250);
 			} 
 			catch (InterruptedException e) 
 			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			cb.setRate(1000);
+			cb.disable();
 			cb.setColors(0, 0, 255);
+			cb.setRate(10000);
 		}
 	}
 
