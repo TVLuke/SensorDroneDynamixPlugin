@@ -562,17 +562,18 @@ public class Backend
 		{
 				Log.i(TAG, "drones size"+drones.size());	
 				//TODO: Try to connect
+				counter++;
 				if(!running)
 				{
 					handler.removeCallbacks(this);
 					return;
 				}
-				if(counter%100==0)
+				if(counter%100==0&& counter>0)
 				{
 				    ctx.registerReceiver(mBluetoothReceiver, btFilter);
 				    mBluetoothAdapter.startDiscovery();
 				}
-				if(counter%150==0)
+				if(counter%150==0 && counter>0)
 				{
 					mBluetoothAdapter.cancelDiscovery();
 					ctx.unregisterReceiver(mBluetoothReceiver);
