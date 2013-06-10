@@ -7,6 +7,9 @@ Bundle-ClassPath: .,lib/sdadnroidlibnew.jar
 Export-Package: org.ambientdynamix.contextplugins.sensordrone
 Import-Package: org.ambientdynamix.api.application,
  org.ambientdynamix.api.contextplugin,
- org.ambientdynamix.api.contextplugin.security
+ org.ambientdynamix.api.contextplugin.security,
+ org.ambientdynamix.contextplugins.context.action.device,
+ org.ambientdynamix.contextplugins.context.info.environment,
+ org.ambientdynamix.contextplugins.info.meta
 DynamicImport-Package: *
 

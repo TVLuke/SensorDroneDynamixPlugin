@@ -12,6 +12,7 @@ import org.ambientdynamix.contextplugins.context.info.environment.ITemperatureCo
 import org.ambientdynamix.contextplugins.info.meta.IContextSource;
 import org.ambientdynamix.contextplugins.info.meta.IDevice;
 import org.ambientdynamix.contextplugins.info.meta.ISourcedContext;
+import org.ambientdynamix.contextplugins.info.meta.ILocalizedContext;
 
 import android.os.IBinder;
 import android.os.Parcel;
@@ -20,7 +21,7 @@ import android.util.Log;
 
 import com.sensorcon.sensordrone.Drone;
 
-public class AmbientTemperatureContextInfo implements ITemperatureContextInfo, ISourcedContext
+public class AmbientTemperatureContextInfo implements ITemperatureContextInfo, ISourcedContext, ILocalizedContext
 {
 	double[] tempvalues= new double[1];
 	List<IContextSource> sources = new ArrayList<IContextSource>();
@@ -158,6 +159,24 @@ public class AmbientTemperatureContextInfo implements ITemperatureContextInfo, I
 	public List<IContextSource> getSources() 
 	{
 		return sources;
+	}
+
+	@Override
+	public double getLatitude() 
+	{
+		return 0; //TODO:
+	}
+
+	@Override
+	public double getLongitude() 
+	{
+		return 0;//TODO:
+	}
+
+	@Override
+	public double getAltitude() 
+	{
+		return 0;//TODO:
 	}
 	
 }
