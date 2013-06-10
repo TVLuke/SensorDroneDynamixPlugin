@@ -554,13 +554,13 @@ public class Backend
 	class BackendRunner implements Runnable
 	{
 		private Handler handler = new Handler();
-		private int delay=1000;
+		private int delay=10000;
 		long counter=0;
 		
 		@Override
 		public void run() 
 		{
-				Log.i(TAG, "drones size"+drones.size());	
+			Log.i(TAG, "drones size"+drones.size());	
 				//TODO: Try to connect
 				counter++;
 				if(!running)
@@ -568,12 +568,12 @@ public class Backend
 					handler.removeCallbacks(this);
 					return;
 				}
-				if(counter%100==0&& counter>0)
+				if(counter%10==0 && counter>0)
 				{
 				    ctx.registerReceiver(mBluetoothReceiver, btFilter);
 				    mBluetoothAdapter.startDiscovery();
 				}
-				if(counter%150==0 && counter>0)
+				if(counter%120==0 && counter>0 && !(counter%10==0))
 				{
 					mBluetoothAdapter.cancelDiscovery();
 					ctx.unregisterReceiver(mBluetoothReceiver);
@@ -617,21 +617,12 @@ public class Backend
 					}
 					Log.i(TAG, "is it connected? "+d.isConnected);
 				}
-				try 
+				handler.removeCallbacks(this); // remove the old callback
+				if(running)
 				{
-					Thread.sleep(2000);
-				} 
-				catch (InterruptedException e) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					handler.postDelayed(this, delay); // register a new one
 				}
-			handler.removeCallbacks(this); // remove the old callback
-			if(running)
-			{
-			handler.postDelayed(this, delay); // register a new one
 			}
-		}
 		
 		public void onResume() 
 		{
