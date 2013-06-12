@@ -690,6 +690,7 @@ public class Backend
 				ConnectionBlinker cb = blinkerarray.get(d.lastMAC);
 				cb.setColors(r, g, b);
 				cb.setRate(delay);
+				cb.enable();
 				cb.run();
 				try 
 				{

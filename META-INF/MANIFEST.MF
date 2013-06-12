@@ -10,9 +10,6 @@ Export-Package: org.ambientdynamix.contextplugins.context.action.device,
  org.ambientdynamix.contextplugins.sensordrone
 Import-Package: org.ambientdynamix.api.application,
  org.ambientdynamix.api.contextplugin,
- org.ambientdynamix.api.contextplugin.security,
- org.ambientdynamix.contextplugins.context.action.device,
- org.ambientdynamix.contextplugins.context.info.environment,
- org.ambientdynamix.contextplugins.info.meta
+ org.ambientdynamix.api.contextplugin.security
 DynamicImport-Package: *
 
