@@ -70,12 +70,24 @@ public class AmbientHumidityContextInfo  implements IHumidityContextInfo
 	public String getStringRepresentation(String format) 
 	{
 		String result="";
-		for(int i=0; i<humidityvalues.length; i++)
-		{
-			result=result+humidityvalues[i]+" ";
-		}
 		if (format.equalsIgnoreCase("text/plain"))
+		{
+			for(int i=0; i<humidityvalues.length; i++)
+			{
+				result=result+humidityvalues[i]+" ";
+			}
+			return result;	
+		}
+		if(format.equalsIgnoreCase("xml"))
+		{
+			result=result+"<values>";
+			for(int i=0; i<humidityvalues.length; i++)
+			{
+				result="<value>"+humidityvalues[i]+"<value>";
+			}
+			result=result+"</values>";
 			return result;
+		}
 		else
 			return null;
 	}
@@ -88,6 +100,7 @@ public class AmbientHumidityContextInfo  implements IHumidityContextInfo
 	{
 		Set<String> formats = new HashSet<String>();
 		formats.add("text/plain");
+		formats.add("XML");
 		return formats;
 	};
 	

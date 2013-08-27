@@ -56,7 +56,7 @@ class AmbientLightContextInfo implements ILightContextInfo
 	public String toString() 
 	{
 		return this.getClass().getSimpleName();
-	};
+	}
 
 	/* (non-Javadoc)
 	 * @see org.ambientdynamix.contextplugins.ambientsound.IAmbientSoundContextInfo#getContextType()
@@ -102,7 +102,7 @@ class AmbientLightContextInfo implements ILightContextInfo
 		Set<String> formats = new HashSet<String>();
 		formats.add("text/plain");
 		return formats;
-	};
+	}
 
 	public AmbientLightContextInfo()
 	{

@@ -3,28 +3,21 @@ package org.ambientdynamix.contextplugins.sensordrone;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.UUID;
 import java.util.Map.Entry;
 
 import org.ambientdynamix.api.contextplugin.ContextPluginRuntime;
 import org.ambientdynamix.api.contextplugin.IContextPluginConfigurationViewFactory;
-import org.ambientdynamix.api.contextplugin.IContextPluginInteractionViewFactory;
-import org.ambientdynamix.api.contextplugin.InteractiveContextPluginRuntime;
 
 import com.sensorcon.sensordrone.Drone;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
-import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class SensorDronePluginConfigurationActivity extends Activity implements IContextPluginConfigurationViewFactory
@@ -49,7 +42,7 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
 		ctx=context;
 		// Discover our screen size for proper formatting 
 		DisplayMetrics met = context.getResources().getDisplayMetrics();
-
+		
 		// Access our Locale via the incoming context's resource configuration to determine language
 		String language = context.getResources().getConfiguration().locale.getDisplayLanguage();
 		
@@ -110,8 +103,6 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
         TextView header = new TextView(context);
         header.setText("Sensordrone Plugin Configuration");
 
-        
-        
         //Add Header
         rootLayout.addView(header,  new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
         		FrameLayout.LayoutParams.WRAP_CONTENT));
@@ -127,7 +118,9 @@ public class SensorDronePluginConfigurationActivity extends Activity implements 
         		FrameLayout.LayoutParams.WRAP_CONTENT));
         
         rootLayout.addView(b2, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-        		FrameLayout.LayoutParams.WRAP_CONTENT));        
+        		FrameLayout.LayoutParams.WRAP_CONTENT)); 
+        
+        //Hier müsste dann UI von Plugins kommen... und das wiederum ist auch eher murks...
 		return rootLayout;
 	}
 	

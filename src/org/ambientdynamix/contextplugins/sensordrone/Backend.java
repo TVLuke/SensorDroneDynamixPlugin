@@ -570,13 +570,11 @@ public class Backend
 				}
 				if(counter%10==0 && counter>0)
 				{
-				    ctx.registerReceiver(mBluetoothReceiver, btFilter);
 				    mBluetoothAdapter.startDiscovery();
 				}
 				if(counter%120==0 && counter>0 && !(counter%10==0))
 				{
 					mBluetoothAdapter.cancelDiscovery();
-					ctx.unregisterReceiver(mBluetoothReceiver);
 				}
 				Set<Entry<String, Drone>> droneset = drones.entrySet();
 				Iterator<Entry<String, Drone>> it = droneset.iterator();

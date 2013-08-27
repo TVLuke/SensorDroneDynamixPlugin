@@ -4,10 +4,7 @@ Bundle-Name: SensorDrone Plugin
 Bundle-SymbolicName: org.ambientdynamix.contextplugins.sensordrone
 Bundle-Version: 1.0.0
 Bundle-ClassPath: .,lib/sdadnroidlibnew.jar
-Export-Package: org.ambientdynamix.contextplugins.context.action.device,
- org.ambientdynamix.contextplugins.context.info.environment,
- org.ambientdynamix.contextplugins.info.meta,
- org.ambientdynamix.contextplugins.sensordrone
+Export-Package: org.ambientdynamix.contextplugins.sensordrone
 Import-Package: org.ambientdynamix.api.application,
  org.ambientdynamix.api.contextplugin,
  org.ambientdynamix.api.contextplugin.security

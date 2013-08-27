@@ -18,6 +18,7 @@ import android.os.IBinder;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+import android.widget.LinearLayout;
 
 import com.sensorcon.sensordrone.Drone;
 
@@ -62,14 +63,21 @@ public class AmbientTemperatureContextInfo implements ITemperatureContextInfo, I
 	public String getStringRepresentation(String format) 
 	{
 		String result="";
-		for(int i=0; i<tempvalues.length; i++)
-		{
-			result = tempvalues[i]+" ";
-		}
 		if (format.equalsIgnoreCase("text/plain"))
-			return result;
-		else
-			return null;
+		{
+			for(int i=0; i<tempvalues.length; i++)
+			{
+				result = tempvalues[i]+" ";
+			}
+		}
+		else if (format.equalsIgnoreCase("XML"))
+		{
+			for(int i=0; i<tempvalues.length; i++)
+			{
+				result="<temperature>"+tempvalues[i]+"</temperature>\n";
+			}
+		}
+		return result;
 	}
 
 	/* (non-Javadoc)
@@ -89,6 +97,7 @@ public class AmbientTemperatureContextInfo implements ITemperatureContextInfo, I
 	{
 		Set<String> formats = new HashSet<String>();
 		formats.add("text/plain");
+		formats.add("XML");
 		return formats;
 	};
 
@@ -177,6 +186,12 @@ public class AmbientTemperatureContextInfo implements ITemperatureContextInfo, I
 	public double getAltitude() 
 	{
 		return 0;//TODO:
+	}
+
+	@Override
+	public void atUIComponentsForLocalizedContext(LinearLayout root) 
+	{
+		
 	}
 	
 }

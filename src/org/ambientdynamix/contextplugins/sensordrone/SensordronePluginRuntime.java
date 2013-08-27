@@ -57,6 +57,7 @@ public class SensordronePluginRuntime extends ReactiveContextPluginRuntime
 	@Override
 	public void updateSettings(ContextPluginSettings settings) 
 	{
+
 		// Not supported
 	}
 
@@ -119,7 +120,7 @@ public class SensordronePluginRuntime extends ReactiveContextPluginRuntime
 
 
 	@Override
-	public void init(PowerScheme arg0, ContextPluginSettings arg1)  throws Exception
+	public void init(PowerScheme arg0, ContextPluginSettings settings)  throws Exception
 	{
 		Log.i("Sensordrone", "init");
     	backend = new Backend(this.getSecuredContext());
@@ -127,7 +128,8 @@ public class SensordronePluginRuntime extends ReactiveContextPluginRuntime
 	}
 
 	@Override
-	public void setPowerScheme(PowerScheme arg0) throws Exception {
+	public void setPowerScheme(PowerScheme arg0) throws Exception 
+	{
 		// TODO Auto-generated method stub
 		
 	}
