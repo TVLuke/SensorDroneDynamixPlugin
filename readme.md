@@ -1,6 +1,6 @@
 # SensorDrone Plugin
 
-Plugin for the Ambient Dynamix Framework wrapping the sensordrone capabilities. Using Ambient Dynamix: http://dynamixframework.org/
+Plugin for the Ambient Dynamix Framework wrapping the sensordrone capabilities. Using Ambient Dynamix: http://ambientdynamix.org
 
 Using the Dynamix Plugin Builder: https://bitbucket.org/ambientlabs/dynamix-plug-in-builder
 
