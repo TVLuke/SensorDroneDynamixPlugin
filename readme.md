@@ -37,6 +37,12 @@ Plugin ID: org.ambientdynamix.contextplugins.sensordrone
 </table>
 
 ###Use
+Add context support as follows:
+
+```Java
+dynamix.addContextSupport(dynamixCallback, "org.ambientdynamix.contextplugins.context.info.environment.temperature");
+```
+
 
 ###Native App Usage
 
